@@ -13,6 +13,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="group"
+        options={{
+          title: "My Group",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="chat-bubble" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
