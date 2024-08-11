@@ -4,6 +4,17 @@ import { Text, View } from "react-native";
 import { TestStyles } from "./group";
 const SAMPLE_IMAGE = require("@/assets/images/SampleImages/SampleImageMessage.png");
 
+// NOTE: OPTIMIZATION idea - Use .formatToParts() with only one formatter and pick the neccessary parts accordingly
+const DATE_FORMATTER = Intl.DateTimeFormat(undefined, {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+});
+const TIME_FORMATTER = Intl.DateTimeFormat(undefined, {
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
 abstract class ChatMessage {
   constructor(protected author: string) {}
 
