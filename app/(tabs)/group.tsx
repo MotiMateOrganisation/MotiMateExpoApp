@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import { ReactElement } from "react";
 import { Text, View } from "react-native";
 
+const SAMPLE_IMAGE = require("@/assets/images/SampleImages/SampleImageMessage.png");
 export default function IndexScreen() {
   return (
     <View
@@ -63,7 +64,11 @@ class ImageMessage extends ChatMessage {
 
   renderMessage(): ReactElement {
     return super.renderMessage(
-      <Image source="https://picsum.photos/seed/696/3000/2000" />,
+      <Image
+        source={SAMPLE_IMAGE}
+        contentFit="scale-down"
+        style={{ width: "40%", height: 184 }}
+      />,
     );
   }
 }
