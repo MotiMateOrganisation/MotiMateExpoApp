@@ -21,6 +21,12 @@ export default function IndexScreen() {
         data={SAMPLE_DATA}
         renderItem={function ({ item }) {
           return item.renderMessage();
+          //NOTE: Plan:
+          // 1. Group List by LocalDate e.g. { "29.03.2024": [ArrayOfMessages]}
+          //   1. Get with Intl.DateTimeFormat(undefined, {year: "numeric", month: "numeric", day: "numeric"}) //NOTE: Use default locale for now
+          // 2. Insert Date JSX before each group
+          // 3. Second Last Group is Yesterday
+          // 4. Last Group is Today
         }}
         estimatedItemSize={4}
         estimatedListSize={{ height: 592, width: 350 }}
