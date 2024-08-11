@@ -5,6 +5,7 @@ import { TestStyles } from "./group";
 const SAMPLE_IMAGE = require("@/assets/images/SampleImages/SampleImageMessage.png");
 
 // NOTE: OPTIMIZATION idea - Use .formatToParts() with only one formatter and pick the neccessary parts accordingly
+// NOTE: Using undefined for now until custom timezone is specified
 const DATE_FORMATTER = Intl.DateTimeFormat(undefined, {
   year: "numeric",
   month: "numeric",
