@@ -1,9 +1,7 @@
 import { FlashList } from "@shopify/flash-list";
-import { Image } from "expo-image";
-import { ReactElement } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { ImageMessage, TextMessage } from "./ImageMessage";
 
-const SAMPLE_IMAGE = require("@/assets/images/SampleImages/SampleImageMessage.png");
 export default function IndexScreen() {
   return (
     <View
@@ -23,72 +21,49 @@ export default function IndexScreen() {
           return item.renderMessage();
           //NOTE: Plan:
           // 1. Group List by LocalDate e.g. { "29.03.2024": [ArrayOfMessages]}
-          //   1. Get with Intl.DateTimeFormat(undefined, {year: "numeric", month: "numeric", day: "numeric"}) //NOTE: Use default locale for now
+          //   1. Get with Intl.DateTimeFormat(undefined, {year: "numeric", month: "numeric", day: "numeric"})
           // 2. Insert Date JSX before each group
           // 3. Second Last Group is Yesterday
           // 4. Last Group is Today
+          //
+          // NOTE: Plan:
+          // 1. Save current author
+          // 2. On next item, compare new auhtor with last author
+          //   - If equal -> Don't render author
         }}
-        estimatedItemSize={4}
+        estimatedItemSize={100}
         estimatedListSize={{ height: 592, width: 350 }}
       />
     </View>
   );
 }
 
-abstract class ChatMessage {
-  constructor(protected author: string) {}
-
-  renderMessage(body: ReactElement) {
-    return (
-      <View style={TestStyles}>
-        <Text>{this.author}</Text>
-        {body}
-      </View>
-    );
-  }
-}
-
-class TextMessage extends ChatMessage {
-  constructor(
-    protected author: string,
-    private text: string,
-  ) {
-    super(author);
-  }
-
-  renderMessage(): ReactElement {
-    return super.renderMessage(<Text>{this.text}</Text>);
-  }
-}
-
-class ImageMessage extends ChatMessage {
-  constructor(
-    protected author: string,
-    private imageURL: string,
-  ) {
-    super(author);
-  }
-
-  renderMessage(): ReactElement {
-    return super.renderMessage(
-      <Image
-        source={SAMPLE_IMAGE}
-        contentFit="scale-down"
-        style={{ width: "40%", height: 184 }}
-      />,
-    );
-  }
-}
-
 const SAMPLE_DATA = [
   new ImageMessage(
     "Jung",
     "../../assets/images/SampleImages/SampleImageMessage.png",
+    "2024-08-11T17:03:06Z",
   ),
-  new TextMessage("Jung", "cheer for your friend @user1!"),
-  new TextMessage("Jung", "cheer for your friend @user1!"),
-  new TextMessage("Jung", "cheer for your friend @user1!"),
-  new TextMessage("Jung", "cheer for your friend @user1!"),
+  new TextMessage(
+    "Jung",
+    "cheer for your friend @user1!",
+    "2024-08-11T17:03:10Z",
+  ),
+  new TextMessage(
+    "Jung",
+    "cheer for your friend @user1!",
+    "2024-08-12T17:03:6Z",
+  ),
+  new TextMessage(
+    "Jung",
+    "cheer for your friend @user1!",
+    "2024-8-12T17:03:06Z",
+  ),
+  new TextMessage(
+    "Jung",
+    "cheer for your friend @user1!",
+    "2024-8-13T17:03:06Z",
+  ),
 ];
 
 export const TestStyles = { borderColor: "black", borderWidth: 1 };
