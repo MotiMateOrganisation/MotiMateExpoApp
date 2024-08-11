@@ -11,7 +11,8 @@ export default function IndexScreen() {
         {
           flex: 1,
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "flex-start",
+          paddingStart: 12,
         },
         TestStyles,
       ]}
@@ -21,8 +22,8 @@ export default function IndexScreen() {
         renderItem={function ({ item }) {
           return item.renderMessage();
         }}
-        estimatedItemSize={2}
-        estimatedListSize={{ height: 100, width: 100 }}
+        estimatedItemSize={4}
+        estimatedListSize={{ height: 592, width: 350 }}
       />
     </View>
   );
