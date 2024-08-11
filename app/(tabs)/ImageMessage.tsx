@@ -16,8 +16,23 @@ const TIME_FORMATTER = Intl.DateTimeFormat(undefined, {
 });
 
 abstract class ChatMessage {
-  constructor(protected author: string) {}
+  #timestamp: Date;
 
+  dateString: string;
+  timeString: string;
+
+  constructor(
+    public author: string,
+    timestamp: string,
+  ) {
+    this.#timestamp = new Date(timestamp);
+    this.dateString = DATE_FORMATTER.format(this.#timestamp);
+    this.timeString = TIME_FORMATTER.format(this.#timestamp);
+  }
+
+  // TODO: Make a React Function Component that takes children-prop out of this:
+  // - Revert ChatMessage back to an interface
+  // - Create object with .MessageParent and .TextMessage & .ImageMessage
   renderMessage(body: ReactElement) {
     return (
       <View style={TestStyles}>
@@ -27,27 +42,31 @@ abstract class ChatMessage {
     );
   }
 }
+
 export class TextMessage extends ChatMessage {
   constructor(
-    protected author: string,
-    private text: string,
+    author: string,
+    timestamp: string,
+    public text: string,
   ) {
-    super(author);
+    super(author, timestamp);
   }
 
   renderMessage(): ReactElement {
     return super.renderMessage(<Text>{this.text}</Text>);
   }
 }
+
 export class ImageMessage extends ChatMessage {
   constructor(
-    protected author: string,
+    author: string,
+    timestamp: string,
     /**
      * Currenty Unused. Will eventually replace {@link SAMPLE_IMAGE}
      */
-    private imageURL: string,
+    public imageURL: string,
   ) {
-    super(author);
+    super(author, timestamp);
   }
 
   renderMessage(): ReactElement {
