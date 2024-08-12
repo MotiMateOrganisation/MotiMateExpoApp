@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
-import { View } from "react-native";
-import { ImageMessage, TextMessage } from "./ImageMessage";
+import { View, Text } from "react-native";
+import { ChatMessage, ImageMessage, TextMessage } from "@/data/ImageMessage";
 
 export default function IndexScreen() {
   return (
@@ -16,20 +16,25 @@ export default function IndexScreen() {
       ]}
     >
       <FlashList
-        data={SAMPLE_DATA}
-        renderItem={function ({ item }) {
-          return item.renderMessage();
-          //NOTE: Plan:
-          // 1. Group List by LocalDate e.g. { "29.03.2024": [ArrayOfMessages]}
-          //   1. Get with Intl.DateTimeFormat(undefined, {year: "numeric", month: "numeric", day: "numeric"})
+        data={DATED_SAMPLE_DATA}
+        renderItem={function ({ item, index }) {
+          if (typeof item == "string") {
+            // TODO: Treat first item always being a date
+
+            return <Text>{item}</Text>;
+          } else {
+            let previousItem = DATED_SAMPLE_DATA[index - 1];
+            let previousAuthor =
+              typeof previousItem == "string" ? null : previousItem.author;
+            let currentAuthor = item.author;
+
+            return item.renderMessage(
+              currentAuthor === previousAuthor ? true : false,
+            );
+          }
+          //NOTE: Date-Plan:
           // 2. Insert Date JSX before each group
-          // 3. Second Last Group is Yesterday
-          // 4. Last Group is Today
-          //
-          // NOTE: Plan:
-          // 1. Save current author
-          // 2. On next item, compare new auhtor with last author
-          //   - If equal -> Don't render author
+          // 3. Check if last two entries should display "Today" or "Yesterday""
         }}
         estimatedItemSize={100}
         estimatedListSize={{ height: 592, width: 350 }}
@@ -41,29 +46,70 @@ export default function IndexScreen() {
 const SAMPLE_DATA = [
   new ImageMessage(
     "Jung",
-    "../../assets/images/SampleImages/SampleImageMessage.png",
     "2024-08-11T17:03:06Z",
+    "../../assets/images/SampleImages/SampleImageMessage.png",
   ),
   new TextMessage(
     "Jung",
-    "cheer for your friend @user1!",
     "2024-08-11T17:03:10Z",
+    "cheer for your friend @user1!",
   ),
   new TextMessage(
     "Jung",
+    "2024-08-11T17:03:10Z",
     "cheer for your friend @user1!",
-    "2024-08-12T17:03:6Z",
   ),
   new TextMessage(
     "Jung",
+    "2024-08-11T17:03:10Z",
     "cheer for your friend @user1!",
-    "2024-8-12T17:03:06Z",
   ),
   new TextMessage(
     "Jung",
+    "2024-08-12T17:03:06Z",
     "cheer for your friend @user1!",
-    "2024-8-13T17:03:06Z",
+  ),
+  new TextMessage(
+    "Jung",
+    "2024-08-12T17:03:06Z",
+    "cheer for your friend @user1!",
+  ),
+  new TextMessage(
+    "Jung",
+    "2024-08-13T17:03:06Z",
+    "cheer for your friend @user1!",
   ),
 ];
 
+function groupByPolyFill<T>(
+  arr: T[],
+  callback: (currentElement: T, index: number) => string | symbol,
+) {
+  return arr.reduce(
+    (
+      acc: Record<string | symbol, T[]> = {},
+      currentElement: T,
+      index: number,
+    ) => {
+      const key = callback(currentElement, index);
+      acc[key] ??= [];
+      acc[key].push(currentElement);
+      return acc;
+    },
+    {},
+  );
+}
+
+// TODO: Concat Groups and splice with date Segment
+const GROUPED_SAMPLE_DATA = groupByPolyFill(SAMPLE_DATA, function (item) {
+  return item.dateString;
+}) as Record<string, (ImageMessage | TextMessage)[]>; // NOTE: groupBy returns Partial even though all groups are required in this case
+
+const DATED_SAMPLE_DATA = Object.entries(GROUPED_SAMPLE_DATA).reduce(function (
+  accumulatingArray: (ImageMessage | TextMessage | string)[],
+  [currentDateString, currentMessages],
+) {
+  accumulatingArray.push(currentDateString, ...currentMessages);
+  return accumulatingArray;
+}, []);
 export const TestStyles = { borderColor: "black", borderWidth: 1 };
