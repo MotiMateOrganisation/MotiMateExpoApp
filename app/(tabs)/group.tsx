@@ -28,9 +28,7 @@ export default function IndexScreen() {
               typeof previousItem == "string" ? null : previousItem.author;
             let currentAuthor = item.author;
 
-            return item.renderMessage(
-              currentAuthor === previousAuthor ? true : false,
-            );
+            return item.renderMessage(currentAuthor !== previousAuthor);
           }
           //TODO: Check if last two entries should display "Today" or "Yesterday""
         }}
