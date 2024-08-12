@@ -32,9 +32,7 @@ export default function IndexScreen() {
               currentAuthor === previousAuthor ? true : false,
             );
           }
-          //NOTE: Date-Plan:
-          // 2. Insert Date JSX before each group
-          // 3. Check if last two entries should display "Today" or "Yesterday""
+          //TODO: Check if last two entries should display "Today" or "Yesterday""
         }}
         estimatedItemSize={100}
         estimatedListSize={{ height: 592, width: 350 }}
