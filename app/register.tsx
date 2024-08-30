@@ -2,13 +2,34 @@ import { View, Button, TextInput, Text } from "react-native";
 import { useState } from "react";
 import { TestStyles } from "./(tabs)";
 
+// TODO: Use in custom Hook
+interface RegistrationStatus {
+  state: BasicRequestState;
+  statusCode?: number;
+  message?: RegistrationErrorMessages;
+}
+
+class RegistrationSuccess implements RegistrationStatus {
+  state = BasicRequestState.SUCCESS;
+}
+
+class RegistrationLoading implements RegistrationStatus {
+  state = BasicRequestState.LOADING;
+}
+
+class RegistrationFailure implements RegistrationStatus {
+  state = BasicRequestState.FAILURE;
+  message: RegistrationErrorMessages;
+  constructor(statusCode: number) {
+    this.message = RegistrationErrorMessages.UNKOWN_ERROR; // TODO: Add status code switch statement here
+  }
+}
 export default function RegistrationScreen() {
   // TODO: Combine into custom Hook
   const [registrationStatus, setRegistrationStatus] =
     useState<BasicRequestState | null>(null);
-  const [errorMessage, setErrorMessage] = useState<RegistrationErrors | null>(
-    null,
-  );
+  const [errorMessage, setErrorMessage] =
+    useState<RegistrationErrorMessages | null>(null);
 
   return (
     <View
@@ -21,7 +42,7 @@ export default function RegistrationScreen() {
         TestStyles,
       ]}
     >
-      {/* TODO: Wrap Label in Pressable and focus on useRef of Button */}
+      {/* TODO: Wrap Label in Pressable and focus on useRef of Pressable */}
       <Text>Register</Text>
       <View>
         <Text>Username (Nickname)</Text>
@@ -72,15 +93,17 @@ export default function RegistrationScreen() {
               switch (RESPONSE.status) {
                 case 400:
                   setRegistrationStatus(BasicRequestState.FAILURE);
-                  setErrorMessage(RegistrationErrors.BAD_REQUEST);
+                  setErrorMessage(RegistrationErrorMessages.BAD_REQUEST);
                   break;
                 case 409:
                   setRegistrationStatus(BasicRequestState.FAILURE);
-                  setErrorMessage(RegistrationErrors.CONFLICT);
+                  setErrorMessage(RegistrationErrorMessages.CONFLICT);
                   break;
                 case 500:
                   setRegistrationStatus(BasicRequestState.FAILURE);
-                  setErrorMessage(RegistrationErrors.INTERNAL_SERVER_ERROR);
+                  setErrorMessage(
+                    RegistrationErrorMessages.INTERNAL_SERVER_ERROR,
+                  );
                   break;
                 default:
                   // TODO: Log this event
@@ -91,7 +114,7 @@ export default function RegistrationScreen() {
             }
           } catch {
             setRegistrationStatus(BasicRequestState.FAILURE);
-            setErrorMessage(RegistrationErrors.UNKOWN_ERROR);
+            setErrorMessage(RegistrationErrorMessages.UNKOWN_ERROR);
           }
         }}
         disabled={registrationStatus === BasicRequestState.LOADING}
@@ -121,7 +144,7 @@ enum BasicRequestState {
   SUCCESS,
 }
 
-enum RegistrationErrors {
+enum RegistrationErrorMessages {
   BAD_REQUEST = "Some of your Input seems to be have an issue",
   CONFLICT = "This email is already in use",
   INTERNAL_SERVER_ERROR = "Our Server seems to have some Issues. Please try again!",
