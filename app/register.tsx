@@ -5,6 +5,9 @@ import {
   Text,
   NativeSyntheticEvent,
   TextInputEndEditingEventData,
+  TextInputProps,
+  KeyboardTypeOptions,
+  ReturnKeyType,
 } from "react-native";
 import { TestStyles } from "./(tabs)";
 import useRegistrationState, {
@@ -41,9 +44,11 @@ export default function RegistrationScreen() {
       <Text>Register</Text>
 
       <InputComponent
-        labelText="Username (Nickname)"
+        labelText="E-Mail"
         isValid={inputValidity.usernameValidity ?? true}
-        hint=""
+        hint="Test Hint"
+        keyboardType="email-address"
+        returnKeyType="next"
         onEndEditing={function ({ nativeEvent: { text } }) {
           const REGEX = /^[\w\-\.]{1,63}@[\w-]{1,63}\.[\w]{2,63}$/;
           updateInputValidity({ usernameValidity: REGEX.test(text) });
@@ -78,6 +83,8 @@ const InvalidStyles = { borderColor: "red", borderWidth: 2 };
 function InputComponent({
   labelText,
   isValid,
+  keyboardType,
+  returnKeyType = "done",
   hint,
   onEndEditing,
   isSecureText = false,
@@ -85,6 +92,8 @@ function InputComponent({
   labelText: string;
   isValid: boolean;
   hint: string;
+  keyboardType: KeyboardTypeOptions;
+  returnKeyType: ReturnKeyType;
   onEndEditing: (
     event: NativeSyntheticEvent<TextInputEndEditingEventData>,
   ) => void;
@@ -94,11 +103,13 @@ function InputComponent({
     <View>
       <Text>{labelText}</Text>
       <TextInput
+        keyboardType={keyboardType}
+        returnKeyType={returnKeyType}
         secureTextEntry={isSecureText}
         style={[TestStyles, isValid ? {} : InvalidStyles]}
         onEndEditing={onEndEditing}
       />
-      <Text style={isValid ? {} : {}}>{hint}</Text>
+      <Text style={isValid ? {} : { color: "red" }}>{hint}</Text>
     </View>
   );
 }
