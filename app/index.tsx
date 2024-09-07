@@ -1,4 +1,4 @@
-import { Text, View, Button, Pressable } from "react-native";
+import { Text, View, Button } from "react-native";
 import { TestStyles } from "./(tabs)";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
@@ -22,8 +22,11 @@ export default function ChooseRegistrationOrLoginScreen() {
         contentFit="contain"
         style={{ width: "72%", height: "39%" }}
       />
-      <Link href="/register">
-        <Text>Register</Text>
+      <Link
+        href="/register"
+        style={[TestStyles, { color: "white", backgroundColor: "deepskyblue" }]}
+      >
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>Register</Text>
         {/* TODO: Use Custom Pressable with Text */}
       </Link>
       <Button title="Login" onPress={function () {}} />
