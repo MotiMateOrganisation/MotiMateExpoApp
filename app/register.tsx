@@ -43,16 +43,11 @@ export default function RegistrationScreen() {
       {/* TODO: Wrap Label in Pressable and focus on useRef of Pressable */}
       <Text>Register</Text>
 
-      <InputComponent
-        labelText="E-Mail"
-        isValid={inputValidity.usernameValidity ?? true}
-        hint="Test Hint"
-        keyboardType="email-address"
-        returnKeyType="next"
-        onEndEditing={function ({ nativeEvent: { text } }) {
-          const REGEX = /^[\w\-\.]{1,63}@[\w-]{1,63}\.[\w]{2,63}$/;
-          updateInputValidity({ usernameValidity: REGEX.test(text) });
-        }}
+      <EmailInputComponent
+        isValidState={inputValidity.usernameValidity}
+        onValidation={(isValid) =>
+          updateInputValidity({ usernameValidity: isValid })
+        }
       />
 
       <Button
@@ -79,6 +74,28 @@ export default function RegistrationScreen() {
 }
 
 const InvalidStyles = { borderColor: "red", borderWidth: 2 };
+
+function EmailInputComponent({
+  isValidState,
+  onValidation,
+}: {
+  isValidState: NullBoolean;
+  onValidation: (isValid: boolean) => void;
+}) {
+  return (
+    <InputComponent
+      labelText="E-Mail"
+      isValid={isValidState ?? true}
+      hint="e.g. jane-doe.uk@gmail.com"
+      keyboardType="email-address"
+      returnKeyType="next"
+      onEndEditing={function ({ nativeEvent: { text } }) {
+        const REGEX = /^[\w\-\.]{1,63}@[\w-]{1,63}\.[\w]{2,63}$/;
+        onValidation(REGEX.test(text));
+      }}
+    />
+  );
+}
 
 function InputComponent({
   labelText,
