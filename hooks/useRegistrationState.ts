@@ -47,7 +47,7 @@ interface RegistrationStatus {
   message?: RegistrationErrorMessages;
 }
 
-//TODO: Can geet rid of state field
+//TODO: Can we geet rid of state field?
 
 class RegistrationSuccess implements RegistrationStatus {
   state = BasicRequestState.SUCCESS;
