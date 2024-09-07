@@ -1,10 +1,11 @@
-import { useEffect, type ComponentProps } from "react";
-import { Keyboard } from "react-native";
+import { useEffect } from "react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Keyboard, type TextInputProps } from "react-native";
 
 /**
  * An open Input on Android can get closed via the Backbutton or Swipe.
  *
- * This hook handles this by clearing all focus, so {@link ComponentProps<TextInput>.onEndEditing()} can fire properly
+ * This hook handles this by clearing all focus, so {@link TextInputProps}`.onEndEditing()` can fire properly
  */
 export default function useAndroidBackButtonInputHandling(): void {
   useEffect(() => {
