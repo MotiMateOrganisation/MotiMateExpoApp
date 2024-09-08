@@ -1,29 +1,31 @@
-import { View, Text } from "react-native";
-import { TestStyles } from "./(tabs)";
+import { PrimaryButton } from "@/components/Buttons";
+import { Heading5 } from "@/components/Headings";
+import {
+  EmailInputComponent,
+  PasswordInputComponent,
+  RepeatPasswordInputComponent,
+  UsernameInputComponent,
+} from "@/components/InputComponents";
+import { RegistrationDetails } from "@/data/repository/UserRepository";
+import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
 import useRegistrationState, {
   NetworkFailure,
   RegistrationFailure,
   RegistrationLoading,
 } from "@/hooks/useRegistrationState";
-import { RegistrationDetails } from "@/data/repository/UserRepository";
+import useRegistrationValidityState from "@/hooks/useRegistrationValidityState";
 import { useState } from "react";
-import useRegistrationValidityState, {
-  type NullBoolean,
-} from "@/hooks/useRegistrationValidityState";
-import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
-import { PrimaryButton } from "@/components/Buttons";
-import { Heading5 } from "@/components/Headings";
-import {
-  EmailInputComponent,
-  UsernameInputComponent,
-} from "@/components/InputComponents";
+import { Text, View } from "react-native";
+import { TestStyles } from "./(tabs)";
 
 export default function RegistrationScreen() {
   useAndroidBackButtonInputHandling();
 
   let [registrationState, startRegistration] = useRegistrationState();
   let [inputValidity, updateInputValidity] = useRegistrationValidityState();
-  useState<NullBoolean>(null);
+  let [username, setUsername] = useState("");
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
 
   return (
     <View
@@ -41,6 +43,7 @@ export default function RegistrationScreen() {
 
       <UsernameInputComponent
         isValidState={inputValidity.usernameValidity}
+        onChangeText={(text) => setUsername(text)}
         onValidation={(isValid) =>
           updateInputValidity({ usernameValidity: isValid })
         }
@@ -48,11 +51,28 @@ export default function RegistrationScreen() {
 
       <EmailInputComponent
         isValidState={inputValidity.emailValidity}
+        onChangeText={(text) => setEmail(text)}
         onValidation={(isValid) =>
           updateInputValidity({ emailValidity: isValid })
         }
       />
 
+      <PasswordInputComponent
+        isValidState={inputValidity.passwordValidity}
+        onChangeText={(text) => setPassword(text)}
+        onValidation={(isValid) =>
+          updateInputValidity({ passwordValidity: isValid })
+        }
+      />
+
+      <RepeatPasswordInputComponent
+        isValidState={inputValidity.repeatPasswordValidity}
+        onEndInput={(repeatedPassword) =>
+          updateInputValidity({
+            repeatPasswordValidity: repeatedPassword === password,
+          })
+        }
+      />
       <PrimaryButton
         title={
           registrationState instanceof RegistrationLoading
@@ -65,7 +85,7 @@ export default function RegistrationScreen() {
         }
         onPress={function () {
           // TODO: Pass Input States
-          startRegistration(new RegistrationDetails("", "", ""));
+          startRegistration(new RegistrationDetails(username, email, password));
         }}
       />
 
