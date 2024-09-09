@@ -13,32 +13,38 @@ export function PrimaryButton({
   title,
   disabled,
   onPress,
-}: { title: string } & PressableProps) {
+  style,
+}: PressableProps & { title: string; style?: StyleProp<ViewStyle> }) {
+  const BASIC_BUTTON_STYLE: StyleProp<ViewStyle> = { borderRadius: 100 };
   return (
     <Pressable
       disabled={disabled}
-      style={
-        disabled
-          ? [BASIC_BUTTON_STYLE, { backgroundColor: Colors.grey.dark1 }]
-          : determineButtonStyleByState
-      }
+      style={determineButtonStyleByState}
       onPress={onPress}
     >
       <Text style={BUTTON_TEXT_STYLE}>{title}</Text>
     </Pressable>
   );
-}
 
-const BASIC_BUTTON_STYLE: StyleProp<ViewStyle> = { borderRadius: 100 };
-function determineButtonStyleByState({
-  pressed,
-}: PressableStateCallbackType): StyleProp<ViewStyle> {
-  return [
-    BASIC_BUTTON_STYLE,
-    {
-      backgroundColor: pressed ? Colors.blue.dark : Colors.blue.grey,
-    },
-  ];
+  function determineButtonStyleByState({
+    pressed,
+  }: PressableStateCallbackType): StyleProp<ViewStyle> {
+    let bgColor: string;
+    if (disabled) {
+      bgColor = Colors.grey.dark1;
+    } else if (pressed) {
+      bgColor = Colors.blue.dark;
+    } else {
+      bgColor = Colors.blue.grey;
+    }
+    return [
+      BASIC_BUTTON_STYLE,
+      {
+        backgroundColor: bgColor,
+      },
+      style,
+    ];
+  }
 }
 
 const BUTTON_TEXT_STYLE: StyleProp<TextStyle> = {
