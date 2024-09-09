@@ -3,7 +3,7 @@ import { Fonts } from "@/constants/Fonts";
 import { PropsWithChildren } from "react";
 import { Text, TextProps } from "react-native";
 
-export function Heading5({ children }: PropsWithChildren<TextProps>) {
+export function Heading5({ style, children }: PropsWithChildren<TextProps>) {
   return (
     <Text
       style={[
@@ -12,6 +12,8 @@ export function Heading5({ children }: PropsWithChildren<TextProps>) {
           textAlign: "center",
         },
         Fonts.title.h5,
+        ,
+        style,
       ]}
     >
       {children}
