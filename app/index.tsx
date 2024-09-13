@@ -1,36 +1,45 @@
-import { Text, View, Button } from "react-native";
-import { TestStyles } from "./(tabs)";
+import { View } from "react-native";
 import { Image } from "expo-image";
-import { Link } from "expo-router";
+import { router } from "expo-router";
+import { PrimaryButton } from "@/components/Buttons";
 
 const LOGO_SVG = require("@/assets/images/Logo/LogoWithName.svg");
 
 export default function ChooseRegistrationOrLoginScreen() {
+  const BUTTON_WIDTH = "48%";
   return (
     <View
       style={[
         {
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
+          height: "90%",
+          width: "90%",
+          justifyContent: "space-between",
+          alignItems: "stretch",
+          alignSelf: "center",
         },
-        TestStyles,
       ]}
     >
       <Image
         source={LOGO_SVG}
         contentFit="contain"
-        style={{ width: "72%", height: "39%" }}
+        style={{ width: "95%", aspectRatio: 1, alignSelf: "center" }}
       />
-      <Link
-        href="/register"
-        style={[TestStyles, { color: "white", backgroundColor: "deepskyblue" }]}
-      >
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>Register</Text>
-        {/* TODO: Use Custom Pressable with Text */}
-      </Link>
-      <Button title="Login" onPress={function () {}} />
-      <Button title="Login with Google" onPress={function () {}} />
+
+      <View style={{ justifyContent: "space-between", height: "15%" }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <PrimaryButton
+            title="Register"
+            onPress={() => router.push("/register")}
+            style={{ width: BUTTON_WIDTH }}
+          />
+          <PrimaryButton
+            title="Login"
+            onPress={function () {}}
+            style={{ width: BUTTON_WIDTH }}
+          />
+        </View>
+        <PrimaryButton title="Login with Google" onPress={function () {}} />
+      </View>
     </View>
   );
 }

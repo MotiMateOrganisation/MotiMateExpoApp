@@ -15,7 +15,7 @@ import useRegistrationState, {
 } from "@/hooks/useRegistrationState";
 import useRegistrationValidityState from "@/hooks/useRegistrationValidityState";
 import { useRef, useState } from "react";
-import { Text, View } from "react-native";
+import { Keyboard, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
@@ -41,6 +41,7 @@ export default function RegistrationScreen() {
         {
           flex: 1,
           alignItems: "stretch",
+          // TODO: Use percents
           paddingHorizontal: 28,
           paddingTop: 27,
           paddingBottom: 22,
@@ -54,7 +55,7 @@ export default function RegistrationScreen() {
       }
       <View
         style={{
-          height: "52.5%",
+          height: "55%",
           justifyContent: "space-between",
           paddingTop: 27,
         }}
@@ -102,11 +103,12 @@ export default function RegistrationScreen() {
 
         <RepeatPasswordInputComponent
           isValidState={inputValidity.repeatPasswordValidity}
-          onEndInput={(repeatedPassword) =>
+          validateInput={(repeatedPassword) =>
             updateInputValidity({
               repeatPasswordValidity: repeatedPassword === password,
             })
           }
+          onSubmitEditing={onSubmit}
           ref={REPEAT_PASSWORD_REF}
         />
       </View>
@@ -126,11 +128,7 @@ export default function RegistrationScreen() {
             registrationState instanceof RegistrationLoading ||
             isBeingEdited
           }
-          onPress={function () {
-            startRegistration(
-              new RegistrationDetails(username, email, password),
-            );
-          }}
+          onPress={onSubmit}
         />
 
         <Text
@@ -152,4 +150,11 @@ export default function RegistrationScreen() {
       ) : null}
     </View>
   );
+
+  function onSubmit() {
+    if (!inputValidity.areAnyInputsInvalid()) {
+      startRegistration(new RegistrationDetails(username, email, password));
+    }
+    Keyboard.dismiss();
+  }
 }
