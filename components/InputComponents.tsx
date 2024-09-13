@@ -222,6 +222,7 @@ export const InputComponent = forwardRef(
           />
           {isSecureText ? (
             <Pressable
+              accessibilityLabel="Show password"
               onPress={() => {
                 setIsPasswordShown(!isPasswordShown);
               }}
