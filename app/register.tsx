@@ -26,6 +26,7 @@ export default function RegistrationScreen() {
   let [isBeingEdited, setIsBeingEdited] = useState(true);
   let [registrationState, startRegistration] = useRegistrationState();
   let [inputValidity, updateInputValidity] = useRegistrationValidityState();
+
   let [username, setUsername] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -109,11 +110,6 @@ export default function RegistrationScreen() {
           ref={REPEAT_PASSWORD_REF}
         />
       </View>
-
-      {registrationState instanceof RegistrationFailure ||
-      registrationState instanceof NetworkFailure ? (
-        <Text>{registrationState.message}</Text>
-      ) : null}
       {
         //#endregion Form Fields
       }
@@ -131,7 +127,6 @@ export default function RegistrationScreen() {
             isBeingEdited
           }
           onPress={function () {
-            //TODO: clear Focus and check validity again
             startRegistration(
               new RegistrationDetails(username, email, password),
             );
@@ -150,6 +145,11 @@ export default function RegistrationScreen() {
           By continuing, you agree to our Terms of Service and Privacy Policy.
         </Text>
       </View>
+
+      {registrationState instanceof RegistrationFailure ||
+      registrationState instanceof NetworkFailure ? (
+        <Text>{registrationState.message}</Text>
+      ) : null}
     </View>
   );
 }
