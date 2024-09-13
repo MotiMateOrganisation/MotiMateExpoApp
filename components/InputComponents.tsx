@@ -17,10 +17,10 @@ import {
   Pressable,
 } from "react-native";
 
-interface SpecialInputComponentProps {
+interface ValidatingInputComponentProps {
   isValidState: NullBoolean;
   onChangeText: (text: string) => void;
-  onSubmitEditing?: (
+  onSubmitEditing: (
     event: NativeSyntheticEvent<TextInputSubmitEditingEventData>,
   ) => void;
   onValidation: (isValid: boolean) => void;
@@ -31,7 +31,7 @@ export function UsernameInputComponent({
   onChangeText,
   onSubmitEditing,
   onValidation,
-}: SpecialInputComponentProps) {
+}: ValidatingInputComponentProps) {
   return (
     <InputComponent
       labelText="Username (Nickname)"
@@ -56,7 +56,7 @@ export const EmailInputComponent = forwardRef(function EmailInputComponent(
     onChangeText,
     onSubmitEditing,
     onValidation,
-  }: SpecialInputComponentProps,
+  }: ValidatingInputComponentProps,
   ref?: ForwardedRef<TextInput>,
 ) {
   return (
@@ -85,7 +85,7 @@ export const PasswordInputComponent = forwardRef(
       onChangeText,
       onSubmitEditing,
       onValidation,
-    }: SpecialInputComponentProps,
+    }: ValidatingInputComponentProps,
     ref?: ForwardedRef<TextInput>,
   ) {
     return (
