@@ -14,6 +14,7 @@ import {
   ViewStyle,
   StyleProp,
   TextInputSubmitEditingEventData,
+  Pressable,
 } from "react-native";
 
 interface SpecialInputComponentProps {
@@ -171,7 +172,10 @@ export const InputComponent = forwardRef(
     }: BaseInputComponentProps,
     ref?: ForwardedRef<TextInput>,
   ) {
+    const LINE_PADDING_VERTICAL = 10;
+
     let [isEmpty, setIsEmpty] = useState(true);
+    let [isPasswordShown, setIsPasswordShown] = useState<NullBoolean>(null);
 
     return (
       <View style={style}>
@@ -183,25 +187,29 @@ export const InputComponent = forwardRef(
         >
           {labelText}
         </Text>
-        <View style={{ flexDirection: "row" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            borderColor: determineBorderColor(isValid, isEmpty),
+            borderRadius: 8,
+            borderWidth: 1,
+          }}
+        >
           <TextInput
             keyboardType={keyboardType}
             returnKeyType={returnKeyType}
-            secureTextEntry={isSecureText}
+            secureTextEntry={isPasswordShown ?? isSecureText}
             placeholder={placeholder}
             placeholderTextColor={Colors.grey.dark2}
             style={[
-              { color: Colors.blue.grey },
-              { flex: 6 },
               {
-                borderColor: determineBorderColor(isValid, isEmpty),
-                borderRadius: 8,
-                borderWidth: 1,
-                alignItems: "stretch",
+                color: Colors.blue.grey,
                 paddingHorizontal: 14,
-                paddingVertical: 6.25,
+                paddingVertical: LINE_PADDING_VERTICAL,
+                flex: 6,
                 ...Fonts.paragraph.p4,
               },
+              isSecureText ? { paddingEnd: 0 } : null,
             ]}
             onChangeText={onChangeText}
             onSubmitEditing={onSubmitEditing}
@@ -212,11 +220,28 @@ export const InputComponent = forwardRef(
             }}
             ref={ref}
           />
-          <Image
-            source={require("@/assets/images/EyeHidden.svg")}
-            contentFit="fill"
-            style={{ height: 20, aspectRatio: 1, padding: 12 }}
-          />
+          {isSecureText ? (
+            <Pressable
+              onPress={() => {
+                setIsPasswordShown(!isPasswordShown);
+              }}
+              style={{
+                flex: 1,
+                paddingVertical: LINE_PADDING_VERTICAL,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                source={require("@/assets/images/EyeHidden.svg")}
+                contentFit="fill"
+                style={{
+                  height: 20,
+                  aspectRatio: 1,
+                }}
+              />
+            </Pressable>
+          ) : null}
         </View>
         <Text
           style={{
