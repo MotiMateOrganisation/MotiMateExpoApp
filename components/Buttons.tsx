@@ -14,7 +14,11 @@ export function PrimaryButton({
   disabled,
   onPress,
   style,
-}: PressableProps & { title: string; style?: StyleProp<ViewStyle> }) {
+}: PressableProps & {
+  /** A Label the button shoud display inside of it */
+  title: string;
+  style?: StyleProp<ViewStyle>;
+}) {
   const BASIC_BUTTON_STYLE: StyleProp<ViewStyle> = { borderRadius: 100 };
   return (
     <Pressable

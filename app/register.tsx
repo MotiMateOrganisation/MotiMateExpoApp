@@ -61,7 +61,7 @@ export default function RegistrationScreen() {
         }}
       >
         <UsernameInputComponent
-          isValidState={inputValidity.usernameValidity}
+          isValid={inputValidity.usernameValidity}
           onChangeText={(text) => {
             setUsername(text);
             setIsBeingEdited(true);
@@ -74,7 +74,7 @@ export default function RegistrationScreen() {
         />
 
         <EmailInputComponent
-          isValidState={inputValidity.emailValidity}
+          isValid={inputValidity.emailValidity}
           onChangeText={(text) => {
             setEmail(text);
             setIsBeingEdited(true);
@@ -88,7 +88,7 @@ export default function RegistrationScreen() {
         />
 
         <PasswordInputComponent
-          isValidState={inputValidity.passwordValidity}
+          isValid={inputValidity.passwordValidity}
           onChangeText={(text) => {
             setPassword(text);
             setIsBeingEdited(true);
@@ -102,7 +102,7 @@ export default function RegistrationScreen() {
         />
 
         <RepeatPasswordInputComponent
-          isValidState={inputValidity.repeatPasswordValidity}
+          isValid={inputValidity.repeatPasswordValidity}
           validateInput={(repeatedPassword) =>
             updateInputValidity({
               repeatPasswordValidity: repeatedPassword === password,

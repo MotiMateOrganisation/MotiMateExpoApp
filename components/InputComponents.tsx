@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { Fonts } from "@/constants/Fonts";
-import { type NullBoolean } from "@/hooks/useRegistrationValidityState";
+import { NullBoolean } from "@/hooks/useRegistrationValidityState";
 import { Image } from "expo-image";
 import { ForwardedRef, forwardRef, useState } from "react";
 import {
@@ -9,44 +9,41 @@ import {
   View,
   type KeyboardTypeOptions,
   type NativeSyntheticEvent,
-  type ReturnKeyType,
   type TextInputEndEditingEventData,
   ViewStyle,
   StyleProp,
   TextInputSubmitEditingEventData,
   Pressable,
+  TextInputProps,
 } from "react-native";
 
-interface ValidatingInputComponentProps {
+interface InputComponentProps extends TextInputProps {
   /**
    * The current validity of this Component' Userinput
    */
-  isValidState: NullBoolean;
-  /**
-   * Callback that is called when this input's content gets changed by the User
-   */
-  onChangeText: (text: string) => void;
-  /**
-   * Callback that is called when this input's "Next" button is pressed.
-   */
+  isValid: NullBoolean;
   onSubmitEditing: (
     event: NativeSyntheticEvent<TextInputSubmitEditingEventData>,
   ) => void;
+}
+
+interface ValidatingInputComponentProps extends InputComponentProps {
+  onChangeText: (text: string) => void;
   /**
    * Callback that is called after the User's input got validated.
-   * @param isValid - new Validity of this Input Field
+   * @param newIsValid - new Validity of this Input Field
    */
-  onValidation: (isValid: boolean) => void;
+  onValidation: (newIsValid: boolean) => void;
 }
 
 export function UsernameInputComponent(props: ValidatingInputComponentProps) {
-  const { isValidState, onChangeText, onSubmitEditing, onValidation } = props;
+  const { isValid, onChangeText, onSubmitEditing, onValidation } = props;
 
   return (
     <InputComponent
       {...props}
       labelText="Username (Nickname)"
-      isValid={isValidState ?? true}
+      isValid={isValid ?? true}
       hint="e.g. Jane"
       keyboardType="default"
       autoComplete="username"
@@ -69,13 +66,13 @@ export const EmailInputComponent = forwardRef(function EmailInputComponent(
   props: ValidatingInputComponentProps,
   ref?: ForwardedRef<TextInput>,
 ) {
-  const { isValidState, onChangeText, onSubmitEditing, onValidation } = props;
+  const { isValid, onChangeText, onSubmitEditing, onValidation } = props;
 
   return (
     <InputComponent
       {...props}
       labelText="E-Mail"
-      isValid={isValidState ?? true}
+      isValid={isValid ?? true}
       hint="e.g. jane-doe.uk@gmail.com"
       keyboardType="email-address"
       autoComplete="email"
@@ -100,13 +97,13 @@ export const PasswordInputComponent = forwardRef(
     props: ValidatingInputComponentProps,
     ref?: ForwardedRef<TextInput>,
   ) {
-    const { isValidState, onChangeText, onSubmitEditing, onValidation } = props;
+    const { isValid, onChangeText, onSubmitEditing, onValidation } = props;
 
     return (
       <InputComponent
         {...props}
         labelText="Password"
-        isValid={isValidState ?? true}
+        isValid={isValid ?? true}
         hint="must contain at least 8 characters, numbers or symbols"
         keyboardType="default"
         autoComplete="new-password"
@@ -126,22 +123,19 @@ export const PasswordInputComponent = forwardRef(
 
 export const RepeatPasswordInputComponent = forwardRef(
   function RepeatPasswordInputComponent(
-    props: Omit<
-      ValidatingInputComponentProps,
-      "onChangeText" | "onValidation"
-    > & {
+    props: InputComponentProps & {
       validateInput: (repeatedPassword: string) => void;
     },
     ref?: ForwardedRef<TextInput>,
   ) {
-    const { isValidState, validateInput, onSubmitEditing } = props;
+    const { isValid, validateInput, onSubmitEditing } = props;
 
     return (
       <InputComponent
         {...props}
         labelText="Confirm Password"
         // TODO: Move ?? true to Base Component
-        isValid={isValidState ?? true}
+        isValid={isValid ?? true}
         hint="This must exactly match your selected password"
         keyboardType="default"
         autoComplete="current-password"
@@ -161,21 +155,17 @@ interface BaseInputComponentProps
   extends Partial<Omit<ValidatingInputComponentProps, "onValidation">> {
   /** The Text to be displayed above this Input Field */
   labelText: string;
-  /** If this Input Field's Userinput is currently valid */
+  // TODO: use isValid in parent interface
   isValid: boolean;
   /** A text hint showing the User the required format of this Input Field */
   hint: string;
   keyboardType: KeyboardTypeOptions;
   autoComplete?: "email" | "username" | "current-password" | "new-password";
-  /** Defaults to "done" */
-  returnKeyType: ReturnKeyType;
-  /** Callback that is called when text input ends. */
   onEndEditing: (
     event: NativeSyntheticEvent<TextInputEndEditingEventData>,
   ) => void;
   /** If true, the text input obscures the text entered so that sensitive text like passwords stay secure. The default value is false. */
   isSecureText?: boolean;
-  /** The string that will be rendered before text input has been entered. */
   placeholder?: string;
   style?: StyleProp<ViewStyle>;
 }
