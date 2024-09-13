@@ -48,6 +48,9 @@ export default function RegistrationScreen() {
     >
       <Heading5>Register</Heading5>
 
+      {
+        //#region Form Fields
+      }
       <View
         style={{
           height: "52.5%",
@@ -111,6 +114,9 @@ export default function RegistrationScreen() {
       registrationState instanceof NetworkFailure ? (
         <Text>{registrationState.message}</Text>
       ) : null}
+      {
+        //#endregion Form Fields
+      }
 
       <View style={{ paddingTop: 162 }}>
         <PrimaryButton
