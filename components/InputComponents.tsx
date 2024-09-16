@@ -10,8 +10,6 @@ import {
   type KeyboardTypeOptions,
   type NativeSyntheticEvent,
   type TextInputEndEditingEventData,
-  ViewStyle,
-  StyleProp,
   TextInputSubmitEditingEventData,
   Pressable,
   TextInputProps,
@@ -19,12 +17,9 @@ import {
 
 interface InputComponentProps extends TextInputProps {
   /**
-   * The current validity of this Component' Userinput
+   * The current validity of this Component's Userinput
    */
   isValid: NullBoolean;
-  onSubmitEditing: (
-    event: NativeSyntheticEvent<TextInputSubmitEditingEventData>,
-  ) => void;
 }
 
 interface ValidatingInputComponentProps extends InputComponentProps {
@@ -34,10 +29,13 @@ interface ValidatingInputComponentProps extends InputComponentProps {
    * @param newIsValid - new Validity of this Input Field
    */
   onValidation: (newIsValid: boolean) => void;
+  onSubmitEditing: (
+    event: NativeSyntheticEvent<TextInputSubmitEditingEventData>,
+  ) => void;
 }
 
 export function UsernameInputComponent(props: ValidatingInputComponentProps) {
-  const { isValid, onChangeText, onSubmitEditing, onValidation } = props;
+  const { isValid, onValidation } = props;
 
   return (
     <InputComponent
@@ -48,8 +46,6 @@ export function UsernameInputComponent(props: ValidatingInputComponentProps) {
       keyboardType="default"
       autoComplete="username"
       returnKeyType="next"
-      onChangeText={onChangeText}
-      onSubmitEditing={onSubmitEditing}
       onEndEditing={function ({ nativeEvent: { text } }) {
         const REGEX = /^\p{L}{1,25}(?:\s\p{L}{1,25})?$/u;
         onValidation(REGEX.test(text));
@@ -66,7 +62,7 @@ export const EmailInputComponent = forwardRef(function EmailInputComponent(
   props: ValidatingInputComponentProps,
   ref?: ForwardedRef<TextInput>,
 ) {
-  const { isValid, onChangeText, onSubmitEditing, onValidation } = props;
+  const { isValid, onValidation } = props;
 
   return (
     <InputComponent
@@ -77,8 +73,6 @@ export const EmailInputComponent = forwardRef(function EmailInputComponent(
       keyboardType="email-address"
       autoComplete="email"
       returnKeyType="next"
-      onChangeText={onChangeText}
-      onSubmitEditing={onSubmitEditing}
       onEndEditing={function ({ nativeEvent: { text } }) {
         const REGEX = /^[\w\-\.]{1,63}@[\w-]{1,63}\.[\w]{2,63}$/;
         onValidation(REGEX.test(text));
@@ -97,7 +91,7 @@ export const PasswordInputComponent = forwardRef(
     props: ValidatingInputComponentProps,
     ref?: ForwardedRef<TextInput>,
   ) {
-    const { isValid, onChangeText, onSubmitEditing, onValidation } = props;
+    const { isValid, onValidation } = props;
 
     return (
       <InputComponent
@@ -108,8 +102,6 @@ export const PasswordInputComponent = forwardRef(
         keyboardType="default"
         autoComplete="new-password"
         returnKeyType="next"
-        onChangeText={onChangeText}
-        onSubmitEditing={onSubmitEditing}
         onEndEditing={function ({ nativeEvent: { text } }) {
           const REGEX = /^[\p{L}\p{P}0-9]{8,100}$/u;
           onValidation(REGEX.test(text));
@@ -128,7 +120,7 @@ export const RepeatPasswordInputComponent = forwardRef(
     },
     ref?: ForwardedRef<TextInput>,
   ) {
-    const { isValid, validateInput, onSubmitEditing } = props;
+    const { isValid, validateInput } = props;
 
     return (
       <InputComponent
@@ -140,7 +132,6 @@ export const RepeatPasswordInputComponent = forwardRef(
         keyboardType="default"
         autoComplete="current-password"
         returnKeyType="done"
-        onSubmitEditing={onSubmitEditing}
         onEndEditing={function ({ nativeEvent: { text } }) {
           validateInput(text);
         }}
@@ -151,11 +142,9 @@ export const RepeatPasswordInputComponent = forwardRef(
   },
 );
 
-interface BaseInputComponentProps
-  extends Partial<Omit<ValidatingInputComponentProps, "onValidation">> {
+interface BaseInputComponentProps extends InputComponentProps {
   /** The Text to be displayed above this Input Field */
   labelText: string;
-  // TODO: use isValid in parent interface
   isValid: boolean;
   /** A text hint showing the User the required format of this Input Field */
   hint: string;
@@ -167,7 +156,6 @@ interface BaseInputComponentProps
   /** If true, the text input obscures the text entered so that sensitive text like passwords stay secure. The default value is false. */
   isSecureText?: boolean;
   placeholder?: string;
-  style?: StyleProp<ViewStyle>;
 }
 
 export const InputComponent = forwardRef(
@@ -179,16 +167,11 @@ export const InputComponent = forwardRef(
     const {
       labelText,
       isValid,
-      keyboardType,
-      autoComplete,
-      returnKeyType = "done",
       hint,
       onChangeText,
       onSubmitEditing,
       onEndEditing,
       isSecureText = false,
-      placeholder,
-      style,
     } = props;
     const LINE_PADDING_VERTICAL = 10;
 
@@ -196,7 +179,7 @@ export const InputComponent = forwardRef(
     let [isPasswordShown, setIsPasswordShown] = useState(false);
 
     return (
-      <View style={style}>
+      <View>
         <Text
           style={[
             { color: Colors.grey.dark3, paddingBottom: 4 },
@@ -215,11 +198,7 @@ export const InputComponent = forwardRef(
         >
           <TextInput
             {...props}
-            keyboardType={keyboardType}
-            autoComplete={autoComplete}
-            returnKeyType={returnKeyType}
             secureTextEntry={isSecureText && !isPasswordShown}
-            placeholder={placeholder}
             placeholderTextColor={Colors.grey.dark2}
             style={[
               {
@@ -240,6 +219,7 @@ export const InputComponent = forwardRef(
             }}
             ref={ref}
           />
+
           {isSecureText ? (
             <Pressable
               accessibilityLabel="Show password"
@@ -268,6 +248,7 @@ export const InputComponent = forwardRef(
             </Pressable>
           ) : null}
         </View>
+
         <Text
           style={{
             color: isValid ? Colors.grey.dark3 : "red",

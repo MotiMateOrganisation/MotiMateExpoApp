@@ -15,7 +15,7 @@ import useRegistrationState, {
 } from "@/hooks/useRegistrationState";
 import useRegistrationValidityState from "@/hooks/useRegistrationValidityState";
 import { useRef, useState } from "react";
-import { Keyboard, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
@@ -108,7 +108,6 @@ export default function RegistrationScreen() {
               repeatPasswordValidity: repeatedPassword === password,
             })
           }
-          onSubmitEditing={onSubmit}
           ref={REPEAT_PASSWORD_REF}
         />
       </View>
@@ -152,9 +151,6 @@ export default function RegistrationScreen() {
   );
 
   function onSubmit() {
-    if (!inputValidity.areAnyInputsInvalid()) {
-      startRegistration(new RegistrationDetails(username, email, password));
-    }
-    Keyboard.dismiss();
+    startRegistration(new RegistrationDetails(username, email, password));
   }
 }
