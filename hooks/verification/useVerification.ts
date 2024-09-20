@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const TAG = "USE_VERIFICATION >>>";
 
-export default function useRegistrationState(): [
+export default function useVerification(): [
   RequestStatus | null,
   (verificationCode: DigitString) => void,
 ] {
