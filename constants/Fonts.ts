@@ -3,6 +3,12 @@ import { StyleProp, TextStyle } from "react-native";
 const INTER_REGULAR = "Inter_400Regular";
 const INTER_MEDIUM = "Inter_500Medium";
 const INTER_BOLD = "Inter_700Bold";
+const SPACE_MONO_REGULAR = "SpaceMono_400Regular";
+
+const big: StyleProp<TextStyle> = {
+  fontSize: 48,
+  fontFamily: SPACE_MONO_REGULAR,
+};
 
 const h2: StyleProp<TextStyle> = {
   fontSize: 48,
@@ -47,6 +53,7 @@ const p9: StyleProp<TextStyle> = {
 };
 
 export const Fonts = {
+  digits: { big },
   title: {
     h5,
     h2,
