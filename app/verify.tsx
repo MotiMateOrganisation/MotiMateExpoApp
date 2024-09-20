@@ -3,14 +3,27 @@ import { Heading5 } from "@/components/Headings";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
 import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
+import useVerification, {
+  VerificationError,
+} from "@/hooks/verification/useVerification";
+import {
+  NetworkError,
+  RequestStatus,
+  RequestSuccess,
+} from "@/utils/RegistrationStatus";
+import { useState } from "react";
 
 const styles = StyleSheet.create({
   topText: {
     color: Colors.grey.dark3,
-    ...Fonts.paragraph.p8,
+    ...Fonts.paragraph.p5,
     textAlign: "center",
+  },
+  middleText: {
+    color: Colors.grey.dark3,
+    ...Fonts.paragraph.p6,
   },
   bottomText: {
     color: Colors.blue.grey,
@@ -22,6 +35,42 @@ const styles = StyleSheet.create({
 export default function VerificationScreen() {
   useAndroidBackButtonInputHandling();
 
+  const [verification, setVerification] = useVerification();
+  const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
+
+  let countdown: NodeJS.Timeout | null = null;
+
+  function triggerCountDown() {
+    setSecondsLeft(60);
+
+    countdown = setInterval(() => {
+      setSecondsLeft(countDown);
+    }, 1000);
+
+    function countDown(currentSecondsLeft: number | null) {
+      if (currentSecondsLeft === 0) {
+        clearCountdown();
+        return null;
+      } else if (currentSecondsLeft === null) {
+        throw new Error(
+          "The Timeout should not start without 'secondsLeft' being set to 60!",
+        );
+      } else {
+        return currentSecondsLeft - 1;
+      }
+    }
+
+    function clearCountdown() {
+      if (countdown === null) {
+        return;
+      } else {
+        clearInterval(countdown);
+      }
+    }
+  }
+
+  //TODO: Add Validation, only Numbers
+
   return (
     <View
       style={[
@@ -29,7 +78,7 @@ export default function VerificationScreen() {
           alignSelf: "center",
           justifyContent: "space-between",
           alignItems: "stretch",
-          width: "80%",
+          width: "85%",
           height: "90%",
         },
       ]}
@@ -45,12 +94,31 @@ export default function VerificationScreen() {
         </Text>
       </View>
 
-      <View>
-        <Text>Enter a 4 Digit Code</Text>
-        <View>
+      <View
+        style={{
+          alignSelf: "center",
+          width: "90%",
+          height: "14%",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.middleText}>Enter a 4 Digit Code</Text>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Image
-            contentFit="fill"
-            source={require("@/assets/images/VerificationCode/CutOutInputFieldGrey.svg")}
+            source={(function determineBorder(
+              verification: RequestStatus | null,
+            ) {
+              if (verification instanceof RequestSuccess) {
+                return require("@/assets/images/VerificationCode/CutOutInputFieldGreen.svg");
+              } else if (
+                verification instanceof VerificationError ||
+                verification instanceof NetworkError
+              ) {
+                return require("@/assets/images/VerificationCode/CutOutInputFieldRed.svg");
+              } else {
+                return require("@/assets/images/VerificationCode/CutOutInputFieldGrey.svg");
+              }
+            })(verification)}
             style={{
               width: "100%",
               aspectRatio: 4.5,
@@ -62,32 +130,67 @@ export default function VerificationScreen() {
             selectionColor="#80808000"
             keyboardType="numeric"
             maxLength={4}
+            onChange={function handleFilledOutCode({ nativeEvent: { text } }) {
+              setVerification(text);
+            }}
             style={[
               {
-                width: "101%",
-                paddingVertical: 2.5,
+                width: "105%",
                 color: Colors.blue.grey,
-                ...Fonts.title.h2,
-                letterSpacing: 55.25,
+                ...Fonts.digits.big,
+                letterSpacing: 52,
               },
             ]}
           />
         </View>
       </View>
 
-      <View>
-        <Text style={styles.bottomText}>
-          <Text style={{ ...Fonts.paragraph.p7 }}>Didn’t Receive Code? </Text>
-          <Text
-            style={{ textDecorationLine: "underline", ...Fonts.paragraph.p6 }}
-          >
-            Resend Code
+      <View
+        style={{
+          height: "40%",
+          justifyContent: "space-between",
+          marginTop: 100,
+        }}
+      >
+        <View>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Text style={[styles.bottomText, { ...Fonts.paragraph.p7 }]}>
+              Didn’t Receive Code?{" "}
+            </Text>
+            <Pressable
+              onPress={triggerCountDown}
+              disabled={!isResendAllowed()}
+              style={[styles.bottomText]}
+            >
+              <Text
+                style={[
+                  {
+                    textDecorationLine: "underline",
+                    ...Fonts.paragraph.p6,
+                  },
+                  isResendAllowed() ? {} : { color: Colors.grey.dark1 },
+                ]}
+              >
+                Resend Code
+              </Text>
+            </Pressable>
+          </View>
+          <Text style={styles.bottomText}>
+            Resend code in {secondsLeft} seconds
           </Text>
-        </Text>
-        <Text style={styles.bottomText}>Resend code in 00:59</Text>
-      </View>
+        </View>
 
-      <PrimaryButton title={"Verify"} disabled={false} onPress={() => {}} />
+        <PrimaryButton
+          title={"Verify"}
+          disabled={!(verification instanceof RequestSuccess)}
+          onPress={() => {}}
+        />
+      </View>
     </View>
   );
+
+  function isResendAllowed() {
+    //TODO: should be state that is false as soon as button is pressed
+    return secondsLeft === null;
+  }
 }
