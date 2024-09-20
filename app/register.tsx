@@ -9,16 +9,15 @@ import {
 import { RegistrationDetails } from "@/data/repository/UserRepository";
 import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
 import useRegistrationState, {
-  NetworkFailure,
   RegistrationFailure,
 } from "@/hooks/useRegistrationState";
-import { RequestLoading } from "@/utils/RegistrationStatus";
 import useRegistrationValidityState from "@/hooks/useRegistrationValidityState";
 import { useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
+import { NetworkError, RequestLoading } from "@/utils/RegistrationStatus";
 
 export default function RegistrationScreen() {
   useAndroidBackButtonInputHandling();
@@ -144,7 +143,7 @@ export default function RegistrationScreen() {
       </View>
 
       {registrationState instanceof RegistrationFailure ||
-      registrationState instanceof NetworkFailure ? (
+      registrationState instanceof NetworkError ? (
         <Text>{registrationState.message}</Text>
       ) : null}
     </View>
