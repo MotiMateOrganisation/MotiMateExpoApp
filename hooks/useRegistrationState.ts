@@ -8,6 +8,7 @@ import {
   RequestSuccess,
   RequestError,
   NetworkError,
+  GeneralErrorMessage,
 } from "@/utils/RegistrationStatus";
 
 const TAG = "USE_REGISTRATION_STATE >>>";
@@ -45,13 +46,12 @@ export default function useRegistrationState(): [
       "There was an Error during the registration Request:",
       error,
     );
-    setState(new NetworkError(RegistrationErrorMessages.NETWORK_ERROR));
+    setState(new NetworkError());
   }
 }
 
 export class RegistrationFailure implements RequestError {
-  message: RegistrationErrorMessages;
-
+  message: GeneralErrorMessage | RegistrationErrorMessages;
   constructor(statusCode: number) {
     switch (statusCode) {
       case 400:
