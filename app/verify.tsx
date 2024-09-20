@@ -29,7 +29,6 @@ export default function VerificationScreen() {
           alignSelf: "center",
           justifyContent: "space-between",
           alignItems: "stretch",
-          // TODO: Use percents
           width: "80%",
           height: "90%",
         },
