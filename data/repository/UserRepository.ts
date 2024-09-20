@@ -3,7 +3,7 @@ import { typeCheckEnvVariable } from "@/utils/TypeHelpers";
 /**
  * A Data Transfer Object containing details about a new user to be registered
  */
-class RegistrationDetails {
+export class RegistrationDetails {
   constructor(
     public username: string,
     public email: string,
@@ -11,7 +11,7 @@ class RegistrationDetails {
   ) {}
 }
 
-type DigitString = string;
+export type DigitString = string;
 
 type apiPaths = "registration" | "activation";
 
@@ -72,4 +72,3 @@ class UserRepository {
  * - Activation
  */
 export default new UserRepository();
-export { RegistrationDetails };
