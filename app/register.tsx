@@ -11,8 +11,8 @@ import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInput
 import useRegistrationState, {
   NetworkFailure,
   RegistrationFailure,
-  RegistrationLoading,
 } from "@/hooks/useRegistrationState";
+import { RequestLoading } from "@/utils/RegistrationStatus";
 import useRegistrationValidityState from "@/hooks/useRegistrationValidityState";
 import { useRef, useState } from "react";
 import { Text, View } from "react-native";
@@ -118,13 +118,13 @@ export default function RegistrationScreen() {
       <View style={{ paddingTop: 162 }}>
         <PrimaryButton
           title={
-            registrationState instanceof RegistrationLoading
+            registrationState instanceof RequestLoading
               ? "Loading..."
               : "Create Account"
           }
           disabled={
             inputValidity.areAnyInputsInvalid() ||
-            registrationState instanceof RegistrationLoading ||
+            registrationState instanceof RequestLoading ||
             isBeingEdited
           }
           onPress={onSubmit}
