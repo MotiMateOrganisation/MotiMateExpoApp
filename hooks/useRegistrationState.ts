@@ -6,7 +6,6 @@ import {
   RequestStatus,
   RequestLoading,
   RequestSuccess,
-  RequestError,
   NetworkError,
   GeneralErrorMessage,
 } from "@/utils/RegistrationStatus";
@@ -50,7 +49,7 @@ export default function useRegistrationState(): [
   }
 }
 
-export class RegistrationFailure implements RequestError {
+export class RegistrationFailure implements RequestStatus {
   message: GeneralErrorMessage | RegistrationErrorMessages;
   constructor(statusCode: number) {
     switch (statusCode) {
