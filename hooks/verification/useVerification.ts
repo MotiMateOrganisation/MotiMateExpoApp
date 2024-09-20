@@ -22,7 +22,13 @@ export default function useVerification(): [
   return [verification, setVerification];
 
   async function setVerification(verificationCode: DigitString) {
+    if (verificationCode.length < 4) {
+      setState(null);
+      return;
+    }
+
     setState(new RequestLoading());
+
     try {
       handleResponse(verificationCode);
     } catch (error) {
