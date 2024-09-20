@@ -54,7 +54,7 @@ class UserRepository {
   /**
    * @throws any `fetch()` related error
    */
-  activateUser(verificationCode: DigitString) {
+  verifyUser(verificationCode: DigitString) {
     return fetch(
       UserRepository.bulildRequest(
         "activation",
