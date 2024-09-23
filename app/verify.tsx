@@ -13,7 +13,7 @@ import {
   RequestStatus,
   RequestSuccess,
 } from "@/utils/RegistrationStatus";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const styles = StyleSheet.create({
   topText: {
@@ -36,38 +36,10 @@ export default function VerificationScreen() {
   useAndroidBackButtonInputHandling();
 
   const [verification, setVerification] = useVerification();
+  const countdownRef = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => clearCountdown, []);
+
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
-
-  let countdown: NodeJS.Timeout | null = null;
-
-  function triggerCountDown() {
-    setSecondsLeft(60);
-
-    countdown = setInterval(() => {
-      setSecondsLeft(countDown);
-    }, 1000);
-
-    function countDown(currentSecondsLeft: number | null) {
-      if (currentSecondsLeft === 0) {
-        clearCountdown();
-        return null;
-      } else if (currentSecondsLeft === null) {
-        throw new Error(
-          "The Timeout should not start without 'secondsLeft' being set to 60!",
-        );
-      } else {
-        return currentSecondsLeft - 1;
-      }
-    }
-
-    function clearCountdown() {
-      if (countdown === null) {
-        return;
-      } else {
-        clearInterval(countdown);
-      }
-    }
-  }
 
   //TODO: Add Validation, only Numbers
 
@@ -152,6 +124,9 @@ export default function VerificationScreen() {
           marginTop: 100,
         }}
       >
+        {/* 
+        //#region Resend Section
+        */}
         <View>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Text style={[styles.bottomText, { ...Fonts.paragraph.p7 }]}>
@@ -175,10 +150,25 @@ export default function VerificationScreen() {
               </Text>
             </Pressable>
           </View>
-          <Text style={styles.bottomText}>
-            Resend code in {secondsLeft} seconds
-          </Text>
+
+          {!isResendAllowed() ? (
+            <Text style={styles.bottomText}>
+              Resend code in{" "}
+              <Text style={{ fontFamily: "SpaceMono_400Regular" }}>
+                {secondsLeft}
+              </Text>{" "}
+              seconds
+            </Text>
+          ) : null}
+
+          {verification instanceof VerificationError ||
+          verification instanceof NetworkError ? (
+            <Text>{verification.message}</Text>
+          ) : null}
         </View>
+        {/*
+        //#endregion Resend Section
+        */}
 
         <PrimaryButton
           title={"Verify"}
@@ -189,8 +179,36 @@ export default function VerificationScreen() {
     </View>
   );
 
+  function triggerCountDown() {
+    setSecondsLeft(60);
+
+    countdownRef.current = setInterval(() => {
+      setSecondsLeft(countDownSeconds);
+    }, 1000);
+
+    function countDownSeconds(currentSecondsLeft: number | null) {
+      if (currentSecondsLeft === 0) {
+        clearCountdown();
+        return null;
+      } else if (currentSecondsLeft === null) {
+        throw new Error(
+          "The Timeout should not start without 'secondsLeft' being set to 60!",
+        );
+      } else {
+        return currentSecondsLeft - 1;
+      }
+    }
+  }
+
+  function clearCountdown() {
+    if (countdownRef.current === null) {
+      return;
+    } else {
+      clearInterval(countdownRef.current);
+    }
+  }
+
   function isResendAllowed() {
-    //TODO: should be state that is false as soon as button is pressed
     return secondsLeft === null;
   }
 }
