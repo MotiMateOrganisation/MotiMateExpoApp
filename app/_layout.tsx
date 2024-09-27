@@ -31,6 +31,7 @@ export default function RootLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="register" />
       <Stack.Screen name="verify" />
+      <Stack.Screen name="initial-personal-goal" />
       <Stack.Screen name="(tabs)" />
     </Stack>
   ) : (
