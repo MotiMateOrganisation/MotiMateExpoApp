@@ -4,7 +4,6 @@ import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
 import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { VerificationError } from "@/hooks/verification/useVerification";
 import {
   NetworkError,
   RequestError,
