@@ -3,10 +3,18 @@ import { Heading5 } from "@/components/Headings";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
 import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import { VerificationError } from "@/hooks/verification/useVerification";
-import { NetworkError, RequestSuccess } from "@/utils/RegistrationStatus";
+import {
+  NetworkError,
+  RequestError,
+  RequestSuccess,
+} from "@/utils/RegistrationStatus";
 import usePersonalGoal from "@/hooks/profile/usePersonalGoal";
+import { useState } from "react";
+import { DigitString } from "@/utils/UtilityClasses";
+import { FormatError } from "@/utils/CustomErrors";
+import { NullBoolean } from "@/hooks/useRegistrationValidityState";
 
 const styles = StyleSheet.create({
   topText: {
@@ -27,6 +35,9 @@ const styles = StyleSheet.create({
 export default function TestScreen() {
   useAndroidBackButtonInputHandling();
 
+  const [goalInput, setGoalInput] = useState("");
+  const [isBeingEdited, setIsBeingEdited] = useState(false);
+  const [isValid, setIsValid] = useState<NullBoolean>(null);
   const [personalGoal, setPersonalGoal] = usePersonalGoal();
 
   return (
@@ -49,82 +60,108 @@ export default function TestScreen() {
         <Text style={styles.topText}>Enter your desired workout quantity.</Text>
       </View>
 
+      <View style={{ height: "10%" }} />
       <View
         style={{
           alignSelf: "center",
-          width: "90%",
+          height: "24%",
+          justifyContent: "space-between",
+        }}
+      >
+        <TextInput
+          selectionColor="#80808000"
+          keyboardType="numeric"
+          maxLength={1}
+          onChange={function handleInput({ nativeEvent: { text } }) {
+            setIsValid(null);
+            setIsBeingEdited(true);
+            setGoalInput(text);
+          }}
+          value={goalInput}
+          style={[
+            {
+              width: "40%",
+              aspectRatio: 1,
+              color: determineColor(),
+              borderColor: determineBorderColor(),
+              borderWidth: 2,
+              borderRadius: 100,
+              textAlign: "center",
+              ...Fonts.digits.extra,
+            },
+          ]}
+        />
+        <Text style={[styles.middleText, { textAlign: "center" }]}>
+          Enter the Quantity
+        </Text>
+      </View>
+
+      <View style={{ height: "40%", justifyContent: "center" }}>
+        {isValid === false ? (
+          <Text>Please only use numbers as Input</Text>
+        ) : //Nested Ternary since this is a sample only
+        personalGoal instanceof RequestError ||
+          personalGoal instanceof NetworkError ? (
+          <Text>{personalGoal.message}</Text>
+        ) : null}
+      </View>
+
+      <View
+        style={{
           height: "14%",
           justifyContent: "space-between",
         }}
       >
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          {/* <Image */}
-          {/*   source={(function determineBorder( */}
-          {/*     verification: RequestStatus | null, */}
-          {/*   ) { */}
-          {/*     if (verification instanceof RequestSuccess) { */}
-          {/*       return require("@/assets/images/VerificationCode/CutOutInputFieldGreen.svg"); */}
-          {/*     } else if ( */}
-          {/*       verification instanceof VerificationError || */}
-          {/*       verification instanceof NetworkError */}
-          {/*     ) { */}
-          {/*       return require("@/assets/images/VerificationCode/CutOutInputFieldRed.svg"); */}
-          {/*     } else { */}
-          {/*       return require("@/assets/images/VerificationCode/CutOutInputFieldGrey.svg"); */}
-          {/*     } */}
-          {/*   })(verification)} */}
-          {/*   style={{ */}
-          {/*     width: "100%", */}
-          {/*     aspectRatio: 4.5, */}
-          {/*     zIndex: -1, */}
-          {/*     position: "absolute", */}
-          {/*   }} */}
-          {/* /> */}
-          {/* <TextInput */}
-          {/*   selectionColor="#80808000" */}
-          {/*   keyboardType="numeric" */}
-          {/*   maxLength={4} */}
-          {/*   onChange={function handleFilledOutCode({ nativeEvent: { text } }) { */}
-          {/*     setVerification(text); */}
-          {/*   }} */}
-          {/*   style={[ */}
-          {/*     { */}
-          {/*       width: "105%", */}
-          {/*       color: Colors.blue.grey, */}
-          {/*       ...Fonts.digits.big, */}
-          {/*       letterSpacing: 52, */}
-          {/*     }, */}
-          {/*   ]} */}
-          {/* /> */}
-        </View>
-        <Text style={styles.middleText}>Enter the Quantity</Text>
-      </View>
-
-      <View style={{ height: "40%" }} />
-      <View
-        style={{
-          height: "13%",
-          justifyContent: "space-between",
-        }}
-      >
-        {personalGoal instanceof VerificationError ||
-        personalGoal instanceof NetworkError ? (
-          <Text>{personalGoal.message}</Text>
-        ) : null}
-
         <Text style={styles.bottomText}>
           You can adjust or reduce your workout quantity anytime in your
           personal account.
         </Text>
 
         <PrimaryButton
-          title={"Set Goal"}
-          disabled={!(personalGoal instanceof RequestSuccess)}
+          title={
+            personalGoal instanceof RequestSuccess ? "Success" : "Set Goal"
+          }
+          disabled={isEmpty(goalInput) || isValid === false}
           onPress={() => {
-            //TODO: setPersonalGoal
+            setIsBeingEdited(false);
+            try {
+              const safeGoalInput = new DigitString(goalInput);
+              setPersonalGoal(safeGoalInput);
+            } catch (error) {
+              if (error instanceof FormatError) {
+                setIsValid(false);
+                return;
+              } else {
+                throw error;
+              }
+            }
           }}
         />
       </View>
     </View>
   );
+
+  function determineBorderColor() {
+    if (isEmpty(goalInput)) {
+      return Colors.grey.dark1;
+    } else if (isBeingEdited) {
+      return Colors.blue.grey;
+    } else if (personalGoal instanceof RequestError || isValid === false) {
+      return Colors.red;
+    } else {
+      return Colors.blue.grey;
+    }
+  }
+
+  function determineColor() {
+    if (isEmpty(goalInput)) {
+      return Colors.grey.dark1;
+    } else {
+      return Colors.blue.grey;
+    }
+  }
+
+  function isEmpty(s: string) {
+    return s.length === 0;
+  }
 }
