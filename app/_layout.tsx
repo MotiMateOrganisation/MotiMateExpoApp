@@ -5,7 +5,10 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
-import { SpaceMono_400Regular } from "@expo-google-fonts/space-mono";
+import {
+  SpaceMono_400Regular,
+  SpaceMono_700Bold,
+} from "@expo-google-fonts/space-mono";
 import { Stack } from "expo-router";
 import { Text } from "react-native";
 
@@ -15,6 +18,7 @@ export default function RootLayout() {
     Inter_500Medium,
     Inter_700Bold,
     SpaceMono_400Regular,
+    SpaceMono_700Bold,
   });
 
   return isLoaded ? (
