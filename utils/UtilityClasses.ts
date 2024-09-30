@@ -9,12 +9,12 @@ export class DigitString {
   safeDigits: SafeDigits;
 
   constructor(unsafeDigits: string) {
-    if (/^d$/.test(unsafeDigits)) {
+    if (/^\d+$/.test(unsafeDigits)) {
+      this.safeDigits = unsafeDigits;
+    } else {
       throw new FormatError(
         `The supplied string "${unsafeDigits}" contains non numeric digits!`,
       );
-    } else {
-      this.safeDigits = unsafeDigits;
     }
   }
 }
