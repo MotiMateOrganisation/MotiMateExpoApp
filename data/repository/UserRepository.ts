@@ -41,7 +41,7 @@ class UserRepository {
 
   updatePersonalGoal(goalPerWeek: SafeDigits) {
     return fetch(
-      bulildRequest("personal-goal", goalPerWeek, goalPerWeek, "PUT"),
+      bulildRequest("personal-goal", `goal=${goalPerWeek}`, goalPerWeek, "PUT"),
     );
   }
 }
@@ -57,11 +57,11 @@ class UserRepository {
  */
 export function bulildRequest(
   route: apiPaths,
-  queryParam: string,
+  queryParamPair: string,
   body: RegistrationDetails | SafeDigits,
   method: "POST" | "PUT" = "POST",
 ) {
-  return new Request(`${API_BASE_ROUTE}/${route}?${queryParam}`, {
+  return new Request(`${API_BASE_ROUTE}/${route}?${queryParamPair}`, {
     method: method,
     headers: {
       "X-API-Key": typeCheckEnvVariable(
