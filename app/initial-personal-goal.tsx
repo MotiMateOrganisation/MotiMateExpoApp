@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TestScreen() {
+export default function PersonalGoalScreen() {
   useAndroidBackButtonInputHandling();
 
   const [goalInput, setGoalInput] = useState("");
