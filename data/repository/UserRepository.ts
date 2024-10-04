@@ -1,4 +1,4 @@
-import { typeCheckEnvVariable } from "@/utils/TypeHelpers";
+import { bulildRequest } from "@/utils/RequestHelpers";
 import { SafeDigits } from "@/utils/UtilityClasses";
 
 /**
@@ -11,10 +11,6 @@ export class RegistrationDetails {
     public password: string,
   ) {}
 }
-
-type apiPaths = "registration" | "activation" | "personal-goal";
-
-const API_BASE_ROUTE = "https://my.api.mockaroo.com";
 
 class UserRepository {
   /**
@@ -47,33 +43,6 @@ class UserRepository {
       bulildRequest("personal-goal", `goal=${goalPerWeek}`, goalPerWeek, "PUT"),
     );
   }
-}
-
-/**
- * # Important
- *
- * **Only `import` in Tests!**
- *
- * # Summary
- *
- * Builds a Request
- */
-export function bulildRequest(
-  route: apiPaths,
-  queryParamPair: string,
-  body: RegistrationDetails | SafeDigits,
-  method: "POST" | "PUT" = "POST",
-) {
-  return new Request(`${API_BASE_ROUTE}/${route}?${queryParamPair}`, {
-    method: method,
-    headers: {
-      "X-API-Key": typeCheckEnvVariable(
-        process.env.EXPO_PUBLIC_MOCKAROO_KEY,
-        "EXPO_PUBLIC_MOCKAROO_KEY",
-      ),
-    },
-    body: JSON.stringify(body),
-  });
 }
 
 /**
