@@ -164,6 +164,7 @@ export const InputComponent = forwardRef(
     props: BaseInputComponentProps,
     ref?: ForwardedRef<TextInput>,
   ) {
+    //TODO: InputComponent Should have its own validity state and only forward that to parent if needed
     const {
       labelText,
       isValid,
