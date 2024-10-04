@@ -1,8 +1,20 @@
-export interface RequestStatus {
-  message?: string;
-}
+import { GroupCreationResponse } from "@/hooks/group/useGroupCreationState";
+
+export interface RequestStatus {}
+//TODO: interface RequestErrorStatus
+
 export class RequestSuccess implements RequestStatus {}
+export class GroupCreationSuccess extends RequestSuccess {
+  joinCode: string;
+
+  constructor(body: GroupCreationResponse) {
+    super();
+    this.joinCode = body.joinCode;
+  }
+}
+
 export class RequestLoading implements RequestStatus {}
+
 export class RequestError implements RequestStatus {
   constructor(public message: GeneralErrorMessage) {}
 
