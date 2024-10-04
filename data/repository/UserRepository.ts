@@ -18,11 +18,7 @@ class UserRepository {
    */
   registerUser(body: RegistrationDetails) {
     return fetch(
-      bulildRequest(
-        "registration",
-        `randomInt=${Math.ceil(Math.random() * 4)}`,
-        body,
-      ),
+      bulildRequest("registration", `randomInt=${body.username}`, body),
     );
   }
 
