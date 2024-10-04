@@ -1,3 +1,4 @@
+import { Inter_700Bold } from "@expo-google-fonts/inter";
 import { StyleProp, TextStyle } from "react-native";
 
 const INTER_REGULAR = "Inter_400Regular";
@@ -26,6 +27,11 @@ const h2: StyleProp<TextStyle> = {
 const h5: StyleProp<TextStyle> = {
   fontSize: 28,
   lineHeight: 48,
+  fontFamily: INTER_BOLD,
+};
+
+const p1: StyleProp<TextStyle> = {
+  fontSize: 16,
   fontFamily: INTER_BOLD,
 };
 
@@ -78,5 +84,6 @@ export const Fonts = {
     p5,
     p4,
     p2,
+    p1,
   },
 };
