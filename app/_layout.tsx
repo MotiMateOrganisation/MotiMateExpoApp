@@ -26,7 +26,7 @@ export default function RootLayout() {
       screenOptions={{
         headerShadowVisible: false,
         headerTintColor: Colors.blue.dark,
-        headerTitle: "",
+        headerTitle: "Test",
         //TODO: Use HeaderRight to show custom Button
         headerStyle: { backgroundColor: Colors.white },
         contentStyle: { backgroundColor: Colors.white },
@@ -36,6 +36,7 @@ export default function RootLayout() {
       <Stack.Screen name="register" />
       <Stack.Screen name="verify" />
       <Stack.Screen name="initial-personal-goal" />
+      <Stack.Screen name="initial-group" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" />
     </Stack>
   ) : (
