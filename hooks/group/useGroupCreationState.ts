@@ -1,15 +1,17 @@
 import GroupRepository from "@/data/repository/GroupRepository";
 import {
+  GroupCreationSuccess,
   NetworkError,
   RequestError,
   RequestLoading,
   RequestStatus,
-  RequestSuccess,
 } from "@/utils/RegistrationStatus";
 import { SafeDigits } from "@/utils/UtilityClasses";
 import { useState } from "react";
 
 const TAG = "USE_GROUP_CREATION >>>";
+
+export type GroupCreationResponse = { joinCode: string };
 
 export default function useGroupCreationState(): [
   RequestStatus | null,
@@ -31,13 +33,15 @@ export default function useGroupCreationState(): [
   }
 
   /**
-   * @throws any fetch related Error
+   * @throws any {@link fetch} related Error
+   * @throws any {@link Response}.json related Error
    */
   async function handleResponse(personalGoalPerWeek: SafeDigits) {
     const RESPONSE = await GroupRepository.create(personalGoalPerWeek);
 
     if (RESPONSE.ok) {
-      setGroupCreationState(new RequestSuccess());
+      const DATA: GroupCreationResponse = await RESPONSE.json();
+      setGroupCreationState(new GroupCreationSuccess(DATA));
     } else {
       setGroupCreationState(
         new RequestError(
