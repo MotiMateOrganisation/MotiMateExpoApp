@@ -13,9 +13,11 @@ export default function RootLayout() {
         contentStyle: { backgroundColor: Colors.white },
         presentation: "modal",
       }}
+      initialRouteName="invite"
     >
       {/* <Stack.Screen name="index" /> */}
       <Stack.Screen name="create" />
+      <Stack.Screen name="invite" />
     </Stack>
   );
 }
