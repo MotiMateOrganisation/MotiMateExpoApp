@@ -5,7 +5,7 @@ class GroupRepository {
    * @throws any `fetch()` related error
    */
   create(groupName: string) {
-    return fetch(bulildRequest("group", `groupName=${groupName}`, groupName));
+    return fetch(bulildRequest("group", `name=${groupName}`, groupName));
   }
 }
 
