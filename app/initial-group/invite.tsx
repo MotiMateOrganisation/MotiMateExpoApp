@@ -6,18 +6,6 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Image } from "expo-image";
 
-const styles = StyleSheet.create({
-  topText: {
-    color: Colors.grey.dark3,
-    ...Fonts.paragraph.p5,
-    textAlign: "center",
-  },
-  middleText: {
-    color: Colors.grey.dark3,
-    ...Fonts.paragraph.p9,
-  },
-});
-
 export default function InviteScreen() {
   const { joinCode } = useLocalSearchParams<{ joinCode?: string }>();
   return (
@@ -64,6 +52,18 @@ export default function InviteScreen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  topText: {
+    color: Colors.grey.dark3,
+    ...Fonts.paragraph.p5,
+    textAlign: "center",
+  },
+  middleText: {
+    color: Colors.grey.dark3,
+    ...Fonts.paragraph.p9,
+  },
+});
 
 export const BASE_INPUT_STYLES = StyleSheet.create({
   copy: {
