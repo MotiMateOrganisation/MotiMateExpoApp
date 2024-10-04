@@ -15,6 +15,7 @@ import { DigitString } from "@/utils/UtilityClasses";
 import { FormatError } from "@/utils/CustomErrors";
 import { NullBoolean } from "@/hooks/useRegistrationValidityState";
 import { isEmpty } from "@/utils/StringHelpers";
+import useNavigateOnSuccessEffect from "@/hooks/navigation/useNavigationOnSuccessEffect";
 
 const styles = StyleSheet.create({
   topText: {
@@ -38,8 +39,10 @@ export default function PersonalGoalScreen() {
   const [goalInput, setGoalInput] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [isValid, setIsValid] = useState<NullBoolean>(null);
-  const [personalGoal, setPersonalGoal] = usePersonalGoal();
+  const [personalGoalCreationState, startPersonalGoalCreation] =
+    usePersonalGoal();
 
+  useNavigateOnSuccessEffect(personalGoalCreationState, "/initial-group");
   return (
     <View
       style={[
@@ -101,9 +104,9 @@ export default function PersonalGoalScreen() {
         {isValid === false ? (
           <Text>Please only use numbers as Input</Text>
         ) : //Nested Ternary since this is a sample only
-        personalGoal instanceof RequestError ||
-          personalGoal instanceof NetworkError ? (
-          <Text>{personalGoal.message}</Text>
+        personalGoalCreationState instanceof RequestError ||
+          personalGoalCreationState instanceof NetworkError ? (
+          <Text>{personalGoalCreationState.message}</Text>
         ) : null}
       </View>
 
@@ -119,15 +122,13 @@ export default function PersonalGoalScreen() {
         </Text>
 
         <PrimaryButton
-          title={
-            personalGoal instanceof RequestSuccess ? "Success" : "Set Goal"
-          }
+          title={"Set Goal"}
           disabled={isEmpty(goalInput) || isValid === false}
           onPress={() => {
             setIsBeingEdited(false);
             try {
               const safeGoalInput = new DigitString(goalInput);
-              setPersonalGoal(safeGoalInput);
+              startPersonalGoalCreation(safeGoalInput);
             } catch (error) {
               if (error instanceof FormatError) {
                 setIsValid(false);
@@ -147,7 +148,10 @@ export default function PersonalGoalScreen() {
       return Colors.grey.dark1;
     } else if (isBeingEdited) {
       return Colors.blue.grey;
-    } else if (personalGoal instanceof RequestError || isValid === false) {
+    } else if (
+      personalGoalCreationState instanceof RequestError ||
+      isValid === false
+    ) {
       return Colors.red;
     } else {
       return Colors.blue.grey;
