@@ -28,7 +28,7 @@ export default function RootLayout() {
       screenOptions={{
         headerShadowVisible: false,
         headerTintColor: Colors.blue.dark,
-        headerTitle: "Test",
+        headerTitle: "",
         //TODO: Use HeaderRight to show custom Button
         headerStyle: { backgroundColor: Colors.white },
         contentStyle: { backgroundColor: Colors.white },

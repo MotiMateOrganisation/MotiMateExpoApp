@@ -38,7 +38,10 @@ export default function PersonalGoalScreen() {
   const [personalGoalCreationState, startPersonalGoalCreation] =
     usePersonalGoal();
 
-  useNavigateOnSuccessEffect(personalGoalCreationState, "/initial-group");
+  useNavigateOnSuccessEffect(
+    personalGoalCreationState,
+    "/initial-group/create",
+  );
   return (
     <View
       style={[

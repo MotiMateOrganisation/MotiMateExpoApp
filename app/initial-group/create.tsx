@@ -13,8 +13,9 @@ import {
   RequestError,
   RequestStatus,
 } from "@/utils/RegistrationStatus";
+import useNavigateOnSuccessEffect from "@/hooks/navigation/useNavigationOnSuccessEffect";
 
-const GROUP_NAME_PATTERN = /^[\p{L}\p{So}]+(?:\s[\p{L}\p{So}]+){0,4}$/u;
+const GROUP_NAME_PATTERN = /^[\p{L}\p{S}]+(?:\s[\p{L}\p{S}]+){0,4}$/u;
 
 const styles = StyleSheet.create({
   topText: {
@@ -34,6 +35,16 @@ export default function GroupCreationScreen() {
   const [groupName, setGroupName] = useState("");
   const [isValid, setIsValid] = useState(true);
   const [groupCreationState, startGroupCreation] = useGroupCreationState();
+
+  useNavigateOnSuccessEffect(groupCreationState, {
+    pathname: "/initial-group/invite",
+    params: {
+      joinCode:
+        groupCreationState instanceof GroupCreationSuccess
+          ? groupCreationState.joinCode
+          : "ERROR",
+    },
+  });
 
   return (
     <View
@@ -91,11 +102,7 @@ export default function GroupCreationScreen() {
         }}
       >
         <PrimaryButton
-          title={
-            groupCreationState instanceof GroupCreationSuccess
-              ? groupCreationState.joinCode
-              : "Next Step"
-          }
+          title={"Next Step"}
           disabled={isEmpty(groupName) || !isValid}
           onPress={() => {
             startGroupCreation(groupName);
