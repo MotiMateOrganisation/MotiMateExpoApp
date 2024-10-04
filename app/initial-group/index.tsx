@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Image } from "expo-image";
 import { router } from "expo-router";
 import { PrimaryButton, SecondaryButton } from "@/components/Buttons";
 import { Heading5 } from "@/components/Headings";
