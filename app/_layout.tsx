@@ -2,6 +2,7 @@ import { Colors } from "@/constants/Colors";
 import {
   Inter_400Regular,
   Inter_500Medium,
+  Inter_600SemiBold,
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
@@ -16,6 +17,7 @@ export default function RootLayout() {
   let [isLoaded, error] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
+    Inter_600SemiBold,
     Inter_700Bold,
     SpaceMono_400Regular,
     SpaceMono_700Bold,
@@ -26,7 +28,7 @@ export default function RootLayout() {
       screenOptions={{
         headerShadowVisible: false,
         headerTintColor: Colors.blue.dark,
-        headerTitle: "Test",
+        headerTitle: "",
         //TODO: Use HeaderRight to show custom Button
         headerStyle: { backgroundColor: Colors.white },
         contentStyle: { backgroundColor: Colors.white },

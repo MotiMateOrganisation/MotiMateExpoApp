@@ -1,4 +1,5 @@
 import { Colors } from "@/constants/Colors";
+import { Fonts } from "@/constants/Fonts";
 import {
   Pressable,
   PressableProps,
@@ -53,8 +54,7 @@ export function PrimaryButton({
 
 const BUTTON_TEXT_STYLE: StyleProp<TextStyle> = {
   color: Colors.white,
-  fontSize: 16,
-  fontWeight: 500,
+  ...Fonts.paragraph.p2,
   paddingVertical: 12,
   textAlign: "center",
 };
