@@ -14,6 +14,7 @@ import { useState } from "react";
 import { DigitString } from "@/utils/UtilityClasses";
 import { FormatError } from "@/utils/CustomErrors";
 import { NullBoolean } from "@/hooks/useRegistrationValidityState";
+import { isEmpty } from "@/utils/StringHelpers";
 
 const styles = StyleSheet.create({
   topText: {
@@ -158,9 +159,5 @@ export default function PersonalGoalScreen() {
     } else {
       return Colors.blue.grey;
     }
-  }
-
-  function isEmpty(s: string) {
-    return s.length === 0;
   }
 }
