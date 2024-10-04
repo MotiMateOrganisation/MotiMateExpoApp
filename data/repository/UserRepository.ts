@@ -39,6 +39,9 @@ class UserRepository {
     );
   }
 
+  /**
+   * @throws any `fetch()` related error
+   */
   updatePersonalGoal(goalPerWeek: SafeDigits) {
     return fetch(
       bulildRequest("personal-goal", `goal=${goalPerWeek}`, goalPerWeek, "PUT"),
@@ -76,7 +79,7 @@ export function bulildRequest(
 /**
  * A Singleton Instance for making User related Requests like:
  *
- * - RegistrationDetails
+ * - Registration
  * - Activation
  */
 export default new UserRepository();
