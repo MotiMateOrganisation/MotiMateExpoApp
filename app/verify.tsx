@@ -3,14 +3,20 @@ import { Heading5 } from "@/components/Headings";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
 import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
-import { Image } from "expo-image";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  ViewStyle,
+} from "react-native";
 import useVerification, {
   VerificationError,
 } from "@/hooks/verification/useVerification";
 import {
   NetworkError,
-  RequestStatus,
+  RequestError,
   RequestSuccess,
 } from "@/utils/RegistrationStatus";
 import { useEffect, useRef, useState } from "react";
@@ -74,33 +80,19 @@ export default function VerificationScreen() {
         style={{
           alignSelf: "center",
           width: "90%",
-          height: "14%",
+          height: "13.5%",
           justifyContent: "space-between",
         }}
       >
         <Text style={styles.middleText}>Enter a 4 Digit Code</Text>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Image
-            source={(function determineBorder(
-              verification: RequestStatus | null,
-            ) {
-              if (verification instanceof RequestSuccess) {
-                return require("@/assets/images/VerificationCode/CutOutInputFieldGreen.svg");
-              } else if (
-                verification instanceof VerificationError ||
-                verification instanceof NetworkError
-              ) {
-                return require("@/assets/images/VerificationCode/CutOutInputFieldRed.svg");
-              } else {
-                return require("@/assets/images/VerificationCode/CutOutInputFieldGrey.svg");
-              }
-            })(verification)}
-            style={{
-              width: "100%",
-              aspectRatio: 4.5,
-              zIndex: -1,
-              position: "absolute",
-            }}
+          <DigitStringBackground
+            slots={4}
+            successPredicate={() => verification instanceof RequestSuccess}
+            failurePredicate={() =>
+              verification instanceof VerificationError ||
+              verification instanceof NetworkError
+            }
           />
           <TextInput
             selectionColor="#80808000"
@@ -114,7 +106,7 @@ export default function VerificationScreen() {
                 width: "105%",
                 color: Colors.blue.grey,
                 ...Fonts.digits.big,
-                letterSpacing: 52,
+                letterSpacing: 53,
               },
             ]}
           />
@@ -214,5 +206,75 @@ export default function VerificationScreen() {
 
   function isResendAllowed() {
     return secondsLeft === null;
+  }
+}
+
+function DigitStringBackground(props: {
+  slots: number;
+  successPredicate: () => boolean;
+  failurePredicate: () => boolean;
+  zIndex?: number;
+}) {
+  const { zIndex = -1 } = props;
+  return (
+    <View
+      accessible={false}
+      style={[
+        {
+          flexDirection: "row",
+          justifyContent: "space-between",
+          columnGap: 12,
+          position: "absolute",
+          zIndex,
+        },
+      ]}
+    >
+      {renderTimes(props.slots)}
+    </View>
+  );
+
+  function renderTimes(amount: number) {
+    const RESULT: ReturnType<typeof DigitCellBackground>[] = [];
+    for (let i: number = 1; i <= amount; i++) {
+      RESULT.push(<DigitCellBackground key={i} {...props} />);
+    }
+    return RESULT;
+  }
+
+  function DigitCellBackground(props: {
+    key: number;
+    successPredicate: () => boolean;
+    failurePredicate: () => boolean;
+  }) {
+    const { successPredicate, failurePredicate } = props;
+    return (
+      <View
+        style={[
+          {
+            flex: 1,
+            aspectRatio: 1,
+            borderRadius: 8,
+          },
+          determineBorderStylesByRequestStatus(
+            successPredicate,
+            failurePredicate,
+          ),
+        ]}
+        {...props}
+      />
+    );
+
+    function determineBorderStylesByRequestStatus(
+      successPredicate: () => boolean,
+      failurePredicate: () => boolean,
+    ): ViewStyle {
+      if (successPredicate()) {
+        return { borderColor: Colors.green, borderWidth: 2 };
+      } else if (failurePredicate()) {
+        return { borderColor: Colors.red, borderWidth: 2 };
+      } else {
+        return { borderColor: Colors.grey.dark1, borderWidth: 1 };
+      }
+    }
   }
 }
