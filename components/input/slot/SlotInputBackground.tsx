@@ -1,5 +1,6 @@
 import { Colors } from "@/constants/Colors";
-import React, { Component } from "react";
+import { renderTimes } from "@/utils/componentHelpers";
+import React from "react";
 import { View, ViewStyle } from "react-native";
 
 export function DigitStringBackground(props: {
@@ -27,17 +28,6 @@ export function DigitStringBackground(props: {
       ))}
     </View>
   );
-
-  function renderTimes(
-    amount: number,
-    renderComponent: (key: number) => React.JSX.Element,
-  ) {
-    const RESULT: React.JSX.Element[] = [];
-    for (let i: number = 1; i <= amount; i++) {
-      RESULT.push(renderComponent(i));
-    }
-    return RESULT;
-  }
 
   function DigitCellBackground(props: {
     key: number;
