@@ -1,5 +1,4 @@
-import { Inter_700Bold } from "@expo-google-fonts/inter";
-import { StyleProp, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle } from "react-native";
 
 const INTER_REGULAR = "Inter_400Regular";
 const INTER_MEDIUM = "Inter_500Medium";
@@ -7,16 +6,6 @@ const INTER_SEMIBOLD = "Inter_600SemiBold";
 const INTER_BOLD = "Inter_700Bold";
 const SPACE_MONO_REGULAR = "SpaceMono_400Regular";
 const SPACE_MONO_BOLD = "SpaceMono_700Bold";
-
-const extra: StyleProp<TextStyle> = {
-  fontSize: 100,
-  fontFamily: SPACE_MONO_BOLD,
-};
-
-const big: StyleProp<TextStyle> = {
-  fontSize: 48,
-  fontFamily: SPACE_MONO_REGULAR,
-};
 
 const h2: StyleProp<TextStyle> = {
   fontSize: 48,
@@ -71,7 +60,22 @@ const p9: StyleProp<TextStyle> = {
 };
 
 export const Fonts = {
-  digits: { extra, big },
+  digits: StyleSheet.create({
+    extra: {
+      fontSize: 100,
+      fontFamily: SPACE_MONO_BOLD,
+    },
+
+    big: {
+      fontSize: 48,
+      fontFamily: SPACE_MONO_REGULAR,
+    },
+
+    medium: {
+      fontSize: 48,
+      fontFamily: SPACE_MONO_REGULAR,
+    },
+  }),
   title: {
     h5,
     h2,
