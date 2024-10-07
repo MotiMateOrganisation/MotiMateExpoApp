@@ -3,22 +3,11 @@ import { Heading5 } from "@/components/Headings";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
 import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  ViewStyle,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 import useVerification, {
   VerificationError,
 } from "@/hooks/verification/useVerification";
-import {
-  NetworkError,
-  RequestError,
-  RequestSuccess,
-} from "@/utils/RegistrationStatus";
+import { NetworkError, RequestSuccess } from "@/utils/RegistrationStatus";
 import { useEffect, useRef, useState } from "react";
 import useNavigateOnSuccessEffect from "@/hooks/navigation/useNavigationOnSuccessEffect";
 import { SlotInputBackground } from "@/components/input/slot/SlotInputBackground";
