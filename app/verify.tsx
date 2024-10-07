@@ -21,6 +21,7 @@ import {
 } from "@/utils/RegistrationStatus";
 import { useEffect, useRef, useState } from "react";
 import useNavigateOnSuccessEffect from "@/hooks/navigation/useNavigationOnSuccessEffect";
+import { SlotInputBackground } from "@/components/input/slot/SlotInputBackground";
 
 const styles = StyleSheet.create({
   topText: {
@@ -86,8 +87,8 @@ export default function VerificationScreen() {
       >
         <Text style={styles.middleText}>Enter a 4 Digit Code</Text>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <DigitStringBackground
-            slots={4}
+          <SlotInputBackground
+            slotAmount={4}
             successPredicate={() => verification instanceof RequestSuccess}
             failurePredicate={() =>
               verification instanceof VerificationError ||
@@ -206,75 +207,5 @@ export default function VerificationScreen() {
 
   function isResendAllowed() {
     return secondsLeft === null;
-  }
-}
-
-function DigitStringBackground(props: {
-  slots: number;
-  successPredicate: () => boolean;
-  failurePredicate: () => boolean;
-  zIndex?: number;
-}) {
-  const { zIndex = -1 } = props;
-  return (
-    <View
-      accessible={false}
-      style={[
-        {
-          flexDirection: "row",
-          justifyContent: "space-between",
-          columnGap: 12,
-          position: "absolute",
-          zIndex,
-        },
-      ]}
-    >
-      {renderTimes(props.slots)}
-    </View>
-  );
-
-  function renderTimes(amount: number) {
-    const RESULT: ReturnType<typeof DigitCellBackground>[] = [];
-    for (let i: number = 1; i <= amount; i++) {
-      RESULT.push(<DigitCellBackground key={i} {...props} />);
-    }
-    return RESULT;
-  }
-
-  function DigitCellBackground(props: {
-    key: number;
-    successPredicate: () => boolean;
-    failurePredicate: () => boolean;
-  }) {
-    const { successPredicate, failurePredicate } = props;
-    return (
-      <View
-        style={[
-          {
-            flex: 1,
-            aspectRatio: 1,
-            borderRadius: 8,
-          },
-          determineBorderStylesByRequestStatus(
-            successPredicate,
-            failurePredicate,
-          ),
-        ]}
-        {...props}
-      />
-    );
-
-    function determineBorderStylesByRequestStatus(
-      successPredicate: () => boolean,
-      failurePredicate: () => boolean,
-    ): ViewStyle {
-      if (successPredicate()) {
-        return { borderColor: Colors.green, borderWidth: 2 };
-      } else if (failurePredicate()) {
-        return { borderColor: Colors.red, borderWidth: 2 };
-      } else {
-        return { borderColor: Colors.grey.dark1, borderWidth: 1 };
-      }
-    }
   }
 }

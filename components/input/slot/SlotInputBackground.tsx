@@ -3,8 +3,8 @@ import { renderTimes } from "@/utils/componentHelpers";
 import React from "react";
 import { View, ViewStyle } from "react-native";
 
-export function DigitStringBackground(props: {
-  slots: number;
+export function SlotInputBackground(props: {
+  slotAmount: number;
   successPredicate: () => boolean;
   failurePredicate: () => boolean;
   zIndex?: number;
@@ -23,7 +23,7 @@ export function DigitStringBackground(props: {
         },
       ]}
     >
-      {renderTimes(props.slots, (key: number) => (
+      {renderTimes(props.slotAmount, (key: number) => (
         <DigitCellBackground key={key} {...props} />
       ))}
     </View>
