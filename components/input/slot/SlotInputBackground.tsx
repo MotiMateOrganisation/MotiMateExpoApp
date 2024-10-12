@@ -43,16 +43,13 @@ export function SlotInputBackground(props: {
             aspectRatio: 1,
             borderRadius: 8,
           },
-          determineBorderStylesByRequestStatus(
-            successPredicate,
-            failurePredicate,
-          ),
+          determineBorderStyles(successPredicate, failurePredicate),
         ]}
         {...props}
       />
     );
 
-    function determineBorderStylesByRequestStatus(
+    function determineBorderStyles(
       successPredicate: () => boolean,
       failurePredicate: () => boolean,
     ): ViewStyle {
