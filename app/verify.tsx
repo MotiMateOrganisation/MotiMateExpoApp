@@ -11,6 +11,7 @@ import { NetworkError, RequestSuccess } from "@/utils/RegistrationStatus";
 import { useEffect, useRef, useState } from "react";
 import useNavigateOnSuccessEffect from "@/hooks/navigation/useNavigationOnSuccessEffect";
 import { SlotInputBackground } from "@/components/input/slot/SlotInputBackground";
+import { SafeDigits } from "@/utils/UtilityClasses";
 
 const styles = StyleSheet.create({
   topText: {
@@ -90,7 +91,7 @@ export default function VerificationScreen() {
             //TODO: placeholder="0000"
             maxLength={4}
             onChange={function handleFilledOutCode({ nativeEvent: { text } }) {
-              setVerification(text);
+              setVerification(text as SafeDigits); //TODO: Add proper validation
             }}
             style={[
               {
