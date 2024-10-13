@@ -12,7 +12,7 @@ const TAG = "USE_GROUP_JOIN >>>";
 
 export default function useGroupJoinState(): [
   RequestStatus | null,
-  (groupName: string) => void,
+  (joinCode: string) => void,
 ] {
   let [groupJoinState, setGroupJoinState] = useState<RequestStatus | null>(
     null,
