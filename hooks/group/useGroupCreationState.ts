@@ -6,7 +6,6 @@ import {
   RequestLoading,
   RequestStatus,
 } from "@/utils/RegistrationStatus";
-import { SafeDigits } from "@/utils/UtilityClasses";
 import { useState } from "react";
 
 const TAG = "USE_GROUP_CREATION >>>";
@@ -36,8 +35,8 @@ export default function useGroupCreationState(): [
    * @throws any {@link fetch} related Error
    * @throws any {@link Response}.json related Error
    */
-  async function handleResponse(personalGoalPerWeek: SafeDigits) {
-    const RESPONSE = await GroupRepository.create(personalGoalPerWeek);
+  async function handleResponse(groupName: string) {
+    const RESPONSE = await GroupRepository.create(groupName);
 
     if (RESPONSE.ok) {
       const DATA: GroupCreationResponse = await RESPONSE.json();
@@ -54,7 +53,7 @@ export default function useGroupCreationState(): [
   function handleError(error: unknown) {
     console.error(
       TAG,
-      "There was an Error during the Request to set the user's personal Goal:",
+      "There was an Error during the Request to create a group:",
       error,
     );
     setGroupCreationState(new NetworkError());

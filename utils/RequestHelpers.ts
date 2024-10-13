@@ -12,8 +12,8 @@ const API_BASE_ROUTE = "https://my.api.mockaroo.com";
 export function bulildRequest(
   route: apiPaths,
   queryParamPair: string,
-  body: RegistrationDetails | SafeDigits,
-  method: "POST" | "PUT" = "POST",
+  body: RegistrationDetails | SafeDigits | string,
+  method: "POST" | "PUT" | "PATCH" = "POST",
 ) {
   return new Request(`${API_BASE_ROUTE}/${route}?${queryParamPair}`, {
     method: method,

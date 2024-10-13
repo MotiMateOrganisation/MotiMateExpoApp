@@ -7,6 +7,10 @@ class GroupRepository {
   create(groupName: string) {
     return fetch(bulildRequest("group", `name=${groupName}`, groupName));
   }
+
+  join(joinCode: string) {
+    return fetch(bulildRequest("group", `code=${joinCode}`, joinCode, "PATCH"));
+  }
 }
 
 /**
