@@ -10,8 +10,6 @@ import { useState } from "react";
 
 const TAG = "USE_GROUP_JOIN >>>";
 
-// export type GroupCreationResponse = { joinCode: string };
-
 export default function useGroupJoinState(): [
   RequestStatus | null,
   (groupName: string) => void,
@@ -37,8 +35,7 @@ export default function useGroupJoinState(): [
    * @throws any {@link Response}.json related Error
    */
   async function handleResponse(joinCode: string) {
-    //TODO: Add to groupRepo
-    const RESPONSE = await GroupRepository.create(joinCode);
+    const RESPONSE = await GroupRepository.join(joinCode);
 
     if (RESPONSE.ok) {
       setGroupJoinState(new RequestSuccess());
