@@ -53,7 +53,7 @@ export default function useGroupCreationState(): [
   function handleError(error: unknown) {
     console.error(
       TAG,
-      "There was an Error during the Request to set the user's personal Goal:",
+      "There was an Error during the Request to create a group:",
       error,
     );
     setGroupCreationState(new NetworkError());
