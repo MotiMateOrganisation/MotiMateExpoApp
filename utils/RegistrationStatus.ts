@@ -47,3 +47,7 @@ export class NetworkError implements RequestStatus {
   public message =
     "There seems to be an issue with your connection. Please try again!";
 }
+
+export function isFailedRequest(status: RequestStatus | null): boolean {
+  return status instanceof RequestError || status instanceof NetworkError;
+}
