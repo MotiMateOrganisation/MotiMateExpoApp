@@ -3,9 +3,11 @@ import { Heading5 } from "@/components/Headings";
 import { Fonts } from "@/constants/Fonts";
 import { Colors } from "@/constants/Colors";
 import useAndroidBackButtonInputHandling from "@/hooks/useAndroidBackButtonInputHandling";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { RequestSuccess } from "@/utils/RegistrationStatus";
+import { View, Text, StyleSheet } from "react-native";
+import { RequestSuccess, isFailedRequest } from "@/utils/RegistrationStatus";
 import { SlotInputBackground } from "@/components/input/slot/SlotInputBackground";
+import { SlotInputField } from "@/components/input/slot/SlotInputField";
+import useGroupJoinState from "@/hooks/group/useGroupJoinState";
 
 const styles = StyleSheet.create({
   middleText: {
@@ -32,9 +34,13 @@ const INPUT_STYLES = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
+
 export default function InviteScreen() {
   useAndroidBackButtonInputHandling();
 
+  const [JOIN_STATE, START_JOINING] = useGroupJoinState();
+
+  const SLOT_AMOUNT = 5;
   // useNavigateOnSuccessEffect(, "");
 
   return (
@@ -45,41 +51,40 @@ export default function InviteScreen() {
         <Text style={styles.middleText}>Enter a 5 Digit Code</Text>
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          {/* TODO: USE SLOTAMOUNT form PArameter also in maxLength */}
           <SlotInputBackground
-            slotAmount={5}
-            // successPredicate={() => verification instanceof RequestSuccess}
-            // failurePredicate={() =>
-            //   verification instanceof VerificationError ||
-            //   verification instanceof NetworkError
-            // }
+            slotAmount={SLOT_AMOUNT}
+            successPredicate={successPredicate}
+            failurePredicate={failurePredicate}
           />
-          <TextInput
-            selectionColor="#80808000"
+          <SlotInputField
             keyboardType="numeric"
-            placeholder="00000"
-            maxLength={5}
-            // onChange={function handleFilledOutCode({ nativeEvent: { text } }) {
-            //   setVerification(text);
-            // }}
-            style={[
-              {
-                // TODO: FONT Turns RED on Failure
-                width: "105%",
-                color: Colors.blue.grey,
-                letterSpacing: 53,
-              },
-              Fonts.digits.medium,
-            ]}
+            slotAmount={SLOT_AMOUNT}
+            width="103%"
+            letterSpacing={53}
+            fontStyle="medium"
+            onChange={function (text: string) {
+              if (text.length === SLOT_AMOUNT) {
+                START_JOINING(text);
+              }
+            }}
+            failurePredicate={failurePredicate}
           />
         </View>
       </View>
 
       <PrimaryButton
         title={"Start Your Journey"}
-        // disabled={!(verification instanceof RequestSuccess)}
+        disabled={!successPredicate()}
         onPress={() => {}}
       />
     </View>
   );
+
+  function successPredicate(): boolean {
+    return JOIN_STATE instanceof RequestSuccess;
+  }
+
+  function failurePredicate() {
+    return isFailedRequest(JOIN_STATE);
+  }
 }
