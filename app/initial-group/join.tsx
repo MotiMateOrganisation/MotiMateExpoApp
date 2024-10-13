@@ -30,7 +30,7 @@ const INPUT_STYLES = StyleSheet.create({
   slotInputBox: {
     alignSelf: "center",
     width: "90%",
-    height: "13.5%",
+    height: "14.5%",
     justifyContent: "space-between",
   },
 });
@@ -45,22 +45,24 @@ export default function InviteScreen() {
 
   return (
     <View style={[BODY_STYLES.nonScrollable]}>
-      <Heading5>Verify Account</Heading5>
+      <Heading5>Join a Group Chat!</Heading5>
 
       <View style={INPUT_STYLES.slotInputBox}>
         <Text style={styles.middleText}>Enter a 5 Digit Code</Text>
 
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View style={{ justifyContent: "center" }}>
           <SlotInputBackground
             slotAmount={SLOT_AMOUNT}
+            columnGap={7}
             successPredicate={successPredicate}
             failurePredicate={failurePredicate}
           />
           <SlotInputField
             keyboardType="numeric"
             slotAmount={SLOT_AMOUNT}
-            width="103%"
-            letterSpacing={53}
+            width="102.5%"
+            height="80%"
+            letterSpacing={35}
             fontStyle="medium"
             onChange={function (text: string) {
               if (text.length === SLOT_AMOUNT) {
@@ -68,9 +70,12 @@ export default function InviteScreen() {
               }
             }}
             failurePredicate={failurePredicate}
+            alignSelf="center"
           />
         </View>
       </View>
+
+      <View style={{ height: "50%" }} />
 
       <PrimaryButton
         title={"Start Your Journey"}
