@@ -36,8 +36,8 @@ export default function useGroupCreationState(): [
    * @throws any {@link fetch} related Error
    * @throws any {@link Response}.json related Error
    */
-  async function handleResponse(personalGoalPerWeek: SafeDigits) {
-    const RESPONSE = await GroupRepository.create(personalGoalPerWeek);
+  async function handleResponse(groupName: string) {
+    const RESPONSE = await GroupRepository.create(groupName);
 
     if (RESPONSE.ok) {
       const DATA: GroupCreationResponse = await RESPONSE.json();
