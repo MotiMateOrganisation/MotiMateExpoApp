@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { StyleSheet } from "react-native";
 
 const INTER_REGULAR = "Inter_400Regular";
 const INTER_MEDIUM = "Inter_500Medium";
@@ -18,6 +18,7 @@ export const Fonts = {
   title: {
     h2: { fontSize: 48, lineHeight: 28, fontFamily: INTER_MEDIUM },
     h5: { fontSize: 28, lineHeight: 48, fontFamily: INTER_BOLD },
+    h6: { fontSize: 28, lineHeight: 28, fontFamily: INTER_SEMIBOLD },
   },
   paragraph: {
     p1: { fontSize: 16, fontFamily: INTER_BOLD },
