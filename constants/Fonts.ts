@@ -80,5 +80,9 @@ export const Fonts = {
       fontSize: 12,
       fontFamily: INTER_MEDIUM,
     },
+    p10: {
+      fontSize: 10,
+      fontFamily: INTER_REGULAR,
+    },
   },
 };
