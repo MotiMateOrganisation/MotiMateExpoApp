@@ -7,82 +7,27 @@ const INTER_BOLD = "Inter_700Bold";
 const SPACE_MONO_REGULAR = "SpaceMono_400Regular";
 const SPACE_MONO_BOLD = "SpaceMono_700Bold";
 
-const h2: StyleProp<TextStyle> = {
-  fontSize: 48,
-  lineHeight: 28,
-  fontFamily: INTER_MEDIUM,
-};
-
-const h5: StyleProp<TextStyle> = {
-  fontSize: 28,
-  lineHeight: 48,
-  fontFamily: INTER_BOLD,
-};
-
 export const Fonts = {
   digits: StyleSheet.create({
-    extra: {
-      fontSize: 100,
-      fontFamily: SPACE_MONO_BOLD,
-    },
+    extra: { fontSize: 100, fontFamily: SPACE_MONO_BOLD },
 
-    big: {
-      fontSize: 48,
-      fontFamily: SPACE_MONO_REGULAR,
-    },
+    big: { fontSize: 48, fontFamily: SPACE_MONO_REGULAR },
 
-    medium: {
-      fontSize: 48,
-      fontFamily: SPACE_MONO_REGULAR,
-    },
+    medium: { fontSize: 48, fontFamily: SPACE_MONO_REGULAR },
   }),
   title: {
-    h5,
-    h2,
+    h2: { fontSize: 48, lineHeight: 28, fontFamily: INTER_MEDIUM },
+    h5: { fontSize: 28, lineHeight: 48, fontFamily: INTER_BOLD },
   },
   paragraph: {
-    p1: {
-      fontSize: 16,
-      fontFamily: INTER_BOLD,
-    },
-
-    p2: {
-      fontSize: 16,
-      fontFamily: INTER_SEMIBOLD,
-    },
-
-    p4: {
-      fontSize: 16,
-      fontFamily: INTER_REGULAR,
-    },
-
-    p5: {
-      fontSize: 14,
-      fontFamily: INTER_REGULAR,
-    },
-
-    p6: {
-      fontSize: 14,
-      fontFamily: INTER_MEDIUM,
-    },
-
-    p7: {
-      fontSize: 14,
-      fontFamily: INTER_BOLD,
-    },
-
-    p8: {
-      fontSize: 12,
-      fontFamily: INTER_REGULAR,
-    },
-
-    p9: {
-      fontSize: 12,
-      fontFamily: INTER_MEDIUM,
-    },
-    p10: {
-      fontSize: 10,
-      fontFamily: INTER_REGULAR,
-    },
+    p1: { fontSize: 16, fontFamily: INTER_BOLD },
+    p2: { fontSize: 16, fontFamily: INTER_SEMIBOLD },
+    p4: { fontSize: 16, fontFamily: INTER_REGULAR },
+    p5: { fontSize: 14, fontFamily: INTER_REGULAR },
+    p6: { fontSize: 14, fontFamily: INTER_MEDIUM },
+    p7: { fontSize: 14, fontFamily: INTER_BOLD },
+    p8: { fontSize: 12, fontFamily: INTER_REGULAR },
+    p9: { fontSize: 12, fontFamily: INTER_MEDIUM },
+    p10: { fontSize: 10, fontFamily: INTER_REGULAR },
   },
 };
