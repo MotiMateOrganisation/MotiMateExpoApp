@@ -19,46 +19,6 @@ const h5: StyleProp<TextStyle> = {
   fontFamily: INTER_BOLD,
 };
 
-const p1: StyleProp<TextStyle> = {
-  fontSize: 16,
-  fontFamily: INTER_BOLD,
-};
-
-const p2: StyleProp<TextStyle> = {
-  fontSize: 16,
-  fontFamily: INTER_SEMIBOLD,
-};
-
-const p4: StyleProp<TextStyle> = {
-  fontSize: 16,
-  fontFamily: INTER_REGULAR,
-};
-
-const p5: StyleProp<TextStyle> = {
-  fontSize: 14,
-  fontFamily: INTER_REGULAR,
-};
-
-const p6: StyleProp<TextStyle> = {
-  fontSize: 14,
-  fontFamily: INTER_MEDIUM,
-};
-
-const p7: StyleProp<TextStyle> = {
-  fontSize: 14,
-  fontFamily: INTER_BOLD,
-};
-
-const p8: StyleProp<TextStyle> = {
-  fontSize: 12,
-  fontFamily: INTER_REGULAR,
-};
-
-const p9: StyleProp<TextStyle> = {
-  fontSize: 12,
-  fontFamily: INTER_MEDIUM,
-};
-
 export const Fonts = {
   digits: StyleSheet.create({
     extra: {
@@ -81,13 +41,44 @@ export const Fonts = {
     h2,
   },
   paragraph: {
-    p9,
-    p8,
-    p7,
-    p6,
-    p5,
-    p4,
-    p2,
-    p1,
+    p1: {
+      fontSize: 16,
+      fontFamily: INTER_BOLD,
+    },
+
+    p2: {
+      fontSize: 16,
+      fontFamily: INTER_SEMIBOLD,
+    },
+
+    p4: {
+      fontSize: 16,
+      fontFamily: INTER_REGULAR,
+    },
+
+    p5: {
+      fontSize: 14,
+      fontFamily: INTER_REGULAR,
+    },
+
+    p6: {
+      fontSize: 14,
+      fontFamily: INTER_MEDIUM,
+    },
+
+    p7: {
+      fontSize: 14,
+      fontFamily: INTER_BOLD,
+    },
+
+    p8: {
+      fontSize: 12,
+      fontFamily: INTER_REGULAR,
+    },
+
+    p9: {
+      fontSize: 12,
+      fontFamily: INTER_MEDIUM,
+    },
   },
 };
