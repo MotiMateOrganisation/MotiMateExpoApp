@@ -39,7 +39,7 @@ export function SingleCircularProgress(props: {
           r={RADIUS}
           stroke={Colors.orange.dark}
           strokeDasharray={CIRCUMFRENCE}
-          strokeDashoffset={progress * CIRCUMFRENCE}
+          strokeDashoffset={(1 - progress) * CIRCUMFRENCE}
           transform={`rotate(-90, ${MIDDLE}, ${MIDDLE})`}
         />
       </G>
