@@ -24,7 +24,7 @@ export class UserInfoSuccess extends RequestSuccess {
     this.username = body.username;
     this.personalGoal = body.personalGoal;
     this.personalProgress = body.personalProgress;
-    this.progress = body.personalGoal / body.personalProgress;
+    this.progress = body.personalProgress / body.personalGoal;
   }
 }
 
