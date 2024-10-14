@@ -44,6 +44,10 @@ class UserRepository {
       bulildRequest("personal-goal", "PUT", `goal=${goalPerWeek}`, goalPerWeek),
     );
   }
+
+  getUserInfo(sessionID: string) {
+    return fetch(bulildRequest("user-info", "GET", `sessionID=${sessionID}`));
+  }
 }
 
 /**
