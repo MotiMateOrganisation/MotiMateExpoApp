@@ -9,6 +9,7 @@ import { SlotInputBackground } from "@/components/input/slot/SlotInputBackground
 import { SlotInputField } from "@/components/input/slot/SlotInputField";
 import useGroupJoinState from "@/hooks/group/useGroupJoinState";
 import { BODY_STYLES } from "@/constants/styles/Body";
+import { router } from "expo-router";
 
 const styles = StyleSheet.create({
   middleText: {
@@ -71,7 +72,9 @@ export default function InviteScreen() {
       <PrimaryButton
         title={"Start Your Journey"}
         disabled={!successPredicate()}
-        onPress={() => {}}
+        onPress={() => {
+          router.navigate("/(tabs)");
+        }}
       />
     </View>
   );
