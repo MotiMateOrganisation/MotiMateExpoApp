@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { DimensionValue } from "react-native";
-import Svg, { Circle, Rect } from "react-native-svg";
+import Svg, { Circle, G, Rect } from "react-native-svg";
 
 /**
  * @param progress - the progress as a **Decimal Number**
@@ -33,18 +33,23 @@ export function SingleCircularProgress(props: {
         stroke="red"
         strokeWidth={1}
       />
-      <Circle
-        cx={MIDDLE}
-        cy={MIDDLE}
-        r={RADIUS}
-        fill="none"
-        stroke={Colors.orange}
-        strokeLinecap="round"
-        strokeWidth={STROKE_WIDTH}
-        strokeDasharray={CIRCUMFRENCE}
-        strokeDashoffset={progress * CIRCUMFRENCE}
-        transform={`rotate(-90, ${MIDDLE}, ${MIDDLE})`}
-      />
+      <G fill="none" strokeLinecap="round" strokeWidth={STROKE_WIDTH}>
+        <Circle
+          cx={MIDDLE}
+          cy={MIDDLE}
+          r={RADIUS}
+          stroke={Colors.orange.light}
+        />
+        <Circle
+          cx={MIDDLE}
+          cy={MIDDLE}
+          r={RADIUS}
+          stroke={Colors.orange.dark}
+          strokeDasharray={CIRCUMFRENCE}
+          strokeDashoffset={progress * CIRCUMFRENCE}
+          transform={`rotate(-90, ${MIDDLE}, ${MIDDLE})`}
+        />
+      </G>
     </Svg>
   );
 }
