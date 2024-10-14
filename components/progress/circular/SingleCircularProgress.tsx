@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { DimensionValue } from "react-native";
-import Svg, { Circle, G, Rect } from "react-native-svg";
+import Svg, { Circle, G } from "react-native-svg";
 
 /**
  * @param progress - the progress as a **Decimal Number**
@@ -26,13 +26,6 @@ export function SingleCircularProgress(props: {
       style={{ width, aspectRatio: 1, zIndex: -1, position: "absolute" }}
       viewBox={`0 0 ${LENGTH} ${LENGTH}`}
     >
-      <Rect // Debugger
-        fill="none"
-        width="100%"
-        height="100%"
-        stroke="red"
-        strokeWidth={1}
-      />
       <G fill="none" strokeLinecap="round" strokeWidth={STROKE_WIDTH}>
         <Circle
           cx={MIDDLE}
