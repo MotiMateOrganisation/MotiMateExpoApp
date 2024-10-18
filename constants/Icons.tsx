@@ -8,6 +8,7 @@ export function Icon(props: {
   const { tintColor, icon } = props;
   return (
     <Image
+      contentFit="contain"
       style={{ tintColor, width: props.size, aspectRatio: 1 }}
       source={Icons[icon]}
     />
