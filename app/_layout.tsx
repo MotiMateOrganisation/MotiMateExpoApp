@@ -39,7 +39,13 @@ export default function RootLayout() {
       <Stack.Screen name="verify" />
       <Stack.Screen name="initial-personal-goal" />
       <Stack.Screen name="initial-group" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(tabs)"
+        options={{
+          headerShown: false,
+          contentStyle: { backgroundColor: Colors.white },
+        }}
+      />
     </Stack>
   ) : (
     // TODO: Use SplashScreen here
